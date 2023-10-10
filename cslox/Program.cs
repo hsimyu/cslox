@@ -1,4 +1,6 @@
-﻿namespace cslox
+﻿using System.Text;
+
+namespace cslox
 {
     internal class Program
     {
@@ -29,6 +31,18 @@
         static void runPrompt()
         {
             // 入力を受け取る
+            var input = Console.In;
+
+            while (true)
+            {
+                Console.Write("> ");
+                var line = input.ReadLine();
+                if (line == null)
+                    break;
+                runImpl(line);
+            }
+
+            Console.WriteLine("END;");
         }
 
         static void runImpl(string script)

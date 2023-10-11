@@ -50,7 +50,7 @@ namespace cslox
 
         static void runImpl(string script)
         {
-            // TODO: impl Scanner
+            var scanner = new Scanner(script);
             Console.WriteLine(script);
         }
 

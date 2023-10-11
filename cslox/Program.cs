@@ -4,6 +4,8 @@ namespace cslox
 {
     internal class Program
     {
+        static bool hadError = false;
+
         static void Main(string[] args)
         {
             if (args.Length > 1)
@@ -26,6 +28,8 @@ namespace cslox
             // TODO: 存在チェック
             var script = File.ReadAllText(filename);
             runImpl(script);
+
+            if (hadError) Environment.Exit(1);
         }
 
         static void runPrompt()
@@ -40,14 +44,25 @@ namespace cslox
                 if (line == null)
                     break;
                 runImpl(line);
+                hadError = false;
             }
-
-            Console.WriteLine("END;");
         }
 
         static void runImpl(string script)
         {
+            // TODO: impl Scanner
             Console.WriteLine(script);
+        }
+
+        static void error(int line, string message)
+        {
+            errorAt(line, "", message);
+        }
+
+        static void errorAt(int line, string where, string message)
+        {
+            Console.Error.WriteLine($"[line {line}] Error{where}: {message}");
+            hadError = true;
         }
     }
 }

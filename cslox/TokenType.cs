@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    enum TokenType
+    public enum TokenType
     {
         // 記号 1 つのトークン
         LEFT_PAREN,

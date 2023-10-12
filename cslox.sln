@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cslox", "cslox\cslox.csproj", "{AC248F10-22C9-4C24-BEE0-DB9870D0EB5D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cslox", "cslox\cslox.csproj", "{AC248F10-22C9-4C24-BEE0-DB9870D0EB5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cslox.Test", "cslox.Test\cslox.Test.csproj", "{304ACCE7-D06D-4617-9512-B2F440E0534C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AC248F10-22C9-4C24-BEE0-DB9870D0EB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC248F10-22C9-4C24-BEE0-DB9870D0EB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC248F10-22C9-4C24-BEE0-DB9870D0EB5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{304ACCE7-D06D-4617-9512-B2F440E0534C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{304ACCE7-D06D-4617-9512-B2F440E0534C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{304ACCE7-D06D-4617-9512-B2F440E0534C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{304ACCE7-D06D-4617-9512-B2F440E0534C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

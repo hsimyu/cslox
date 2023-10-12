@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    internal class Scanner
+    public class Scanner
     {
         private string source = string.Empty;
         private List<Token> tokens = new List<Token>();
@@ -15,12 +15,12 @@ namespace cslox
         private int currentIndex = 0;
         private int line = 0;
 
-        internal Scanner(string source)
+        public Scanner(string source)
         {
             this.source = source;
         }
 
-        internal List<Token> scanTokens()
+        public List<Token> scanTokens()
         {
             while (!isAtEnd())
             {

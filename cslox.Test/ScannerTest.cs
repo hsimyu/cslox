@@ -4,7 +4,7 @@ namespace cslox.Test
     public class ScannerTest
     {
         [TestMethod]
-        public void Token()
+        public void ScanToken()
         {
             var input = "()";
             var scanner = new Scanner(input);

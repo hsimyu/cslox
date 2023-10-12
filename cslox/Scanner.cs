@@ -50,6 +50,30 @@ namespace cslox
                 case ')':
                     addToken(TokenType.RIGHT_PAREN, null);
                     break;
+                case '{':
+                    addToken(TokenType.LEFT_BRACE, null);
+                    break;
+                case '}':
+                    addToken(TokenType.RIGHT_BRACE, null);
+                    break;
+                case ',':
+                    addToken(TokenType.COMMA, null);
+                    break;
+                case '.':
+                    addToken(TokenType.DOT, null);
+                    break;
+                case '-':
+                    addToken(TokenType.MINUS, null);
+                    break;
+                case '+':
+                    addToken(TokenType.PLUS, null);
+                    break;
+                case ';':
+                    addToken(TokenType.SEMICOLON, null);
+                    break;
+                case '*':
+                    addToken(TokenType.STAR, null);
+                    break;
                 default:
                     break;
             }

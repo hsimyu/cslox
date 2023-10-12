@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace cslox
 {
@@ -45,34 +44,46 @@ namespace cslox
             switch (c)
             {
                 case '(':
-                    addToken(TokenType.LEFT_PAREN, null);
+                    addToken(TokenType.LEFT_PAREN);
                     break;
                 case ')':
-                    addToken(TokenType.RIGHT_PAREN, null);
+                    addToken(TokenType.RIGHT_PAREN);
                     break;
                 case '{':
-                    addToken(TokenType.LEFT_BRACE, null);
+                    addToken(TokenType.LEFT_BRACE);
                     break;
                 case '}':
-                    addToken(TokenType.RIGHT_BRACE, null);
+                    addToken(TokenType.RIGHT_BRACE);
                     break;
                 case ',':
-                    addToken(TokenType.COMMA, null);
+                    addToken(TokenType.COMMA);
                     break;
                 case '.':
-                    addToken(TokenType.DOT, null);
+                    addToken(TokenType.DOT);
                     break;
                 case '-':
-                    addToken(TokenType.MINUS, null);
+                    addToken(TokenType.MINUS);
                     break;
                 case '+':
-                    addToken(TokenType.PLUS, null);
+                    addToken(TokenType.PLUS);
                     break;
                 case ';':
-                    addToken(TokenType.SEMICOLON, null);
+                    addToken(TokenType.SEMICOLON);
                     break;
                 case '*':
-                    addToken(TokenType.STAR, null);
+                    addToken(TokenType.STAR);
+                    break;
+                case '!':
+                    addToken(match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
+                    break;
+                case '=':
+                    addToken(match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
+                    break;
+                case '<':
+                    addToken(match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
+                    break;
+                case '>':
+                    addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
                     break;
                 default:
                     Program.error(line, $"Unexpected character: {c}");
@@ -83,6 +94,23 @@ namespace cslox
         char advance()
         {
             return source.ElementAt(currentIndex++);
+        }
+
+        // 次の文字が期待したものならインデックスを進めて true を返す。
+        bool match(char expected)
+        {
+            if (isAtEnd()) return false;
+
+            // advance() 時にすでにインデックスは進んでいる
+            if (source.ElementAt(currentIndex) != expected) return false;
+
+            advance();
+            return true;
+        }
+
+        void addToken(TokenType type)
+        {
+            addToken(type, null);
         }
 
         void addToken(TokenType type, object? literal)

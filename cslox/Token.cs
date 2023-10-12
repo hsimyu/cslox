@@ -8,7 +8,7 @@ namespace cslox
 {
     public class Token
     {
-        TokenType type;
+        public TokenType type;
         string lexeme;
         object? literal;
         int line;

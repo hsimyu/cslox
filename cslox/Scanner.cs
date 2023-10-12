@@ -45,7 +45,10 @@ namespace cslox
             switch (c)
             {
                 case '(':
-                    // addToken(LEFT_PAREN);
+                    addToken(TokenType.LEFT_PAREN, null);
+                    break;
+                case ')':
+                    addToken(TokenType.RIGHT_PAREN, null);
                     break;
                 default:
                     break;
@@ -55,6 +58,12 @@ namespace cslox
         char advance()
         {
             return source.ElementAt(currentIndex++);
+        }
+
+        void addToken(TokenType type, object? literal)
+        {
+            string text = source.Substring(startIndex, currentIndex - startIndex);
+            tokens.Add(new Token(type, text, literal, line));
         }
     }
 }

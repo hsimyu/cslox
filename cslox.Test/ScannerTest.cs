@@ -11,8 +11,8 @@ namespace cslox.Test
             var tokens = scanner.scanTokens();
 
             Assert.AreEqual(3, tokens.Count);
-            Assert.AreEqual(TokenType.LEFT_PAREN, tokens[0]);
-            Assert.AreEqual(TokenType.RIGHT_PAREN, tokens[1]);
+            Assert.AreEqual(TokenType.LEFT_PAREN, tokens[0].type);
+            Assert.AreEqual(TokenType.RIGHT_PAREN, tokens[1].type);
         }
     }
 }

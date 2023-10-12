@@ -99,6 +99,14 @@ namespace cslox
                         addToken(TokenType.SLASH);
                     }
                     break;
+                case ' ':
+                case '\r':
+                case '\t':
+                    // 空白を無視する
+                    break;
+                case '\n':
+                    line++;
+                    break;
                 default:
                     Program.error(line, $"Unexpected character: {c}");
                     break;

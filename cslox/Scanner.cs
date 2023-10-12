@@ -85,6 +85,20 @@ namespace cslox
                 case '>':
                     addToken(match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
                     break;
+                case '/':
+                    if (match('/'))
+                    {
+                        // 行コメントなので、行末まで消費する
+                        while (peek() != '\n' && !isAtEnd())
+                        {
+                            advance();
+                        }
+                    }
+                    else
+                    {
+                        addToken(TokenType.SLASH);
+                    }
+                    break;
                 default:
                     Program.error(line, $"Unexpected character: {c}");
                     break;
@@ -106,6 +120,12 @@ namespace cslox
 
             advance();
             return true;
+        }
+
+        char peek()
+        {
+            if (isAtEnd()) return '\0';
+            return source.ElementAt(currentIndex);
         }
 
         void addToken(TokenType type)

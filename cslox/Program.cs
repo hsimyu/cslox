@@ -54,12 +54,12 @@ namespace cslox
             Console.WriteLine(script);
         }
 
-        static void error(int line, string message)
+        public static void error(int line, string message)
         {
             errorAt(line, "", message);
         }
 
-        static void errorAt(int line, string where, string message)
+        public static void errorAt(int line, string where, string message)
         {
             Console.Error.WriteLine($"[line {line}] Error{where}: {message}");
             hadError = true;

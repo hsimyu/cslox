@@ -75,6 +75,7 @@ namespace cslox
                     addToken(TokenType.STAR, null);
                     break;
                 default:
+                    Program.error(line, $"Unexpected character: {c}");
                     break;
             }
         }

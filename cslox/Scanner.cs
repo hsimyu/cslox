@@ -112,7 +112,14 @@ namespace cslox
                     line++;
                     break;
                 default:
-                    Program.error(line, $"Unexpected character: {c}");
+                    if (isDigit(c))
+                    {
+                        consumeNumber();
+                    }
+                    else
+                    {
+                        Program.error(line, $"Unexpected character: {c}");
+                    }
                     break;
             }
         }
@@ -134,6 +141,11 @@ namespace cslox
             return true;
         }
 
+        bool isDigit(char c)
+        {
+            return c >= '0' && c <= '9';
+        }
+
         void consumeString()
         {
             // 次の " の手前まで消費
@@ -153,14 +165,43 @@ namespace cslox
             advance();
 
             // "" で囲まれた内部を文字列リテラルとする
-            string value = source.Substring(startIndex + 1, currentIndex - 1);
+            string value = source.Substring(startIndex + 1, currentIndex - startIndex - 2);
             addToken(TokenType.STRING, value);
+        }
+
+        void consumeNumber()
+        {
+            while (isDigit(peek()))
+            {
+                advance();
+            }
+
+            // 小数部対応
+            if (peek() == '.' && isDigit(peekNext()))
+            {
+                // 小数点を消費
+                advance();
+
+                while (isDigit(peek()))
+                {
+                    advance();
+                }
+            }
+
+            string value = source.Substring(startIndex, currentIndex - startIndex);
+            addToken(TokenType.NUMBER, double.Parse(value));
         }
 
         char peek()
         {
             if (isAtEnd()) return '\0';
             return source.ElementAt(currentIndex);
+        }
+
+        char peekNext()
+        {
+            if (currentIndex + 1 >= source.Length) return '\0';
+            return source.ElementAt(currentIndex + 1);
         }
 
         void addToken(TokenType type)

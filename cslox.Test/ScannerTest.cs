@@ -46,5 +46,29 @@ namespace cslox.Test
 
             Assert.AreEqual(TokenType.STRING, tokens[0].type);
         }
+
+        [TestMethod]
+        public void IntegerLiteral()
+        {
+            var input = "5 + 5";
+            var scanner = new Scanner(input);
+            var tokens = scanner.scanTokens();
+
+            Assert.AreEqual(TokenType.NUMBER, tokens[0].type);
+            Assert.AreEqual(TokenType.PLUS, tokens[1].type);
+            Assert.AreEqual(TokenType.NUMBER, tokens[2].type);
+        }
+
+        [TestMethod]
+        public void FloatLiteral()
+        {
+            var input = "5.0 + 5.0";
+            var scanner = new Scanner(input);
+            var tokens = scanner.scanTokens();
+
+            Assert.AreEqual(TokenType.NUMBER, tokens[0].type);
+            Assert.AreEqual(TokenType.PLUS, tokens[1].type);
+            Assert.AreEqual(TokenType.NUMBER, tokens[2].type);
+        }
     }
 }

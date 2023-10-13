@@ -51,7 +51,12 @@ namespace cslox
         static void runImpl(string script)
         {
             var scanner = new Scanner(script);
-            Console.WriteLine(script);
+            var tokens = scanner.scanTokens();
+
+            for (var i = 0; i < tokens.Count; i++)
+            {
+                Console.WriteLine($"[{i}] {tokens[i]}");
+            }
         }
 
         public static void error(int line, string message)

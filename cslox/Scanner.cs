@@ -116,13 +116,28 @@ namespace cslox
                     }
                     else if (match('*'))
                     {
-                        // ブロックコメントなので、次の */ まで消費する
-                        while (!(
-                            (peek() == '*' && peekNext() == '/') ||
-                            isAtEnd()
-                        ))
+                        // ブロックコメント
+                        // /* の出現回数に見合う */ まで消費する
+                        int nestLevel = 1;
+                        while (!isAtEnd())
                         {
                             if (peek() == '\n') line++;
+
+                            if (peek() == '*' && peekNext() == '/')
+                            {
+                                nestLevel--;
+                            }
+
+                            if (peek() == '/' && peekNext() == '*')
+                            {
+                                nestLevel++;
+                            }
+
+                            if (nestLevel == 0)
+                            {
+                                break;
+                            }
+
                             advance();
                         }
 

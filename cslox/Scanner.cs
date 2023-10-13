@@ -114,6 +114,28 @@ namespace cslox
                             advance();
                         }
                     }
+                    else if (match('*'))
+                    {
+                        // ブロックコメントなので、次の */ まで消費する
+                        while (!(
+                            (peek() == '*' && peekNext() == '/') ||
+                            isAtEnd()
+                        ))
+                        {
+                            if (peek() == '\n') line++;
+                            advance();
+                        }
+
+                        if (isAtEnd())
+                        {
+                            Program.error(line, "Unterminated block comment.");
+                        }
+                        else
+                        {
+                            advance();
+                            advance();
+                        }
+                    }
                     else
                     {
                         addToken(TokenType.SLASH);

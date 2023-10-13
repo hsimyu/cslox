@@ -9,8 +9,9 @@ namespace cslox
     public class Token
     {
         public TokenType type;
+        public object? literal;
+
         string lexeme;
-        object? literal;
         int line;
 
         internal Token(TokenType type, string lexeme, object? literal, int line)

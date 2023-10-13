@@ -14,6 +14,11 @@ namespace cslox
         private int currentIndex = 0;
         private int line = 0;
 
+        private static readonly Dictionary<string, TokenType> Keywords = new Dictionary<string, TokenType>
+        {
+            { "and", TokenType.AND }
+        };
+
         public Scanner(string source)
         {
             this.source = source;
@@ -116,6 +121,10 @@ namespace cslox
                     {
                         consumeNumber();
                     }
+                    else if (isAlpha(c))
+                    {
+                        consumeIdentifier();
+                    }
                     else
                     {
                         Program.error(line, $"Unexpected character: {c}");
@@ -144,6 +153,16 @@ namespace cslox
         bool isDigit(char c)
         {
             return c >= '0' && c <= '9';
+        }
+
+        bool isAlpha(char c)
+        {
+            return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_');
+        }
+
+        bool isAlphaNumeric(char c)
+        {
+            return isAlpha(c) || isDigit(c);
         }
 
         void consumeString()
@@ -190,6 +209,25 @@ namespace cslox
 
             string value = source.Substring(startIndex, currentIndex - startIndex);
             addToken(TokenType.NUMBER, double.Parse(value));
+        }
+
+        void consumeIdentifier()
+        {
+            while (isAlphaNumeric(peek()))
+            {
+                advance();
+            }
+
+            // キーワードかどうかを判定し、そうでなければ識別子とする
+            string value = source.Substring(startIndex, currentIndex - startIndex);
+            if (Keywords.TryGetValue(value, out var keyword))
+            {
+                addToken(keyword);
+            }
+            else
+            {
+                addToken(TokenType.IDENTIFIER, value);
+            }
         }
 
         char peek()

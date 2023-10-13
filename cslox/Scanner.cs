@@ -99,6 +99,10 @@ namespace cslox
                         addToken(TokenType.SLASH);
                     }
                     break;
+                case '"':
+                    // 文字列リテラル
+                    consumeString();
+                    break;
                 case ' ':
                 case '\r':
                 case '\t':
@@ -128,6 +132,29 @@ namespace cslox
 
             advance();
             return true;
+        }
+
+        void consumeString()
+        {
+            // 次の " の手前まで消費
+            while (peek() != '"' && !isAtEnd())
+            {
+                if (peek() == '\n') line++;
+                advance();
+            }
+
+            if (isAtEnd())
+            {
+                Program.error(line, "Unterminated string.");
+                return;
+            }
+
+            // 終端の " を消費
+            advance();
+
+            // "" で囲まれた内部を文字列リテラルとする
+            string value = source.Substring(startIndex + 1, currentIndex - 1);
+            addToken(TokenType.STRING, value);
         }
 
         char peek()

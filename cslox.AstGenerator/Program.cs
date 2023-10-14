@@ -15,7 +15,10 @@ namespace cslox.AstGenerator
             string outputDir = args[0];
             var result = EmitAstTree("Expression", new string[]
             {
-                "Binary: Expression left, Token op, Expression right"
+                "Binary: Expression left, Token op, Expression right",
+                "Grouping: Expression exp",
+                "Literal: object value",
+                "Unary: Token op, Expression right",
             });
 
             var filePath = Path.Join(outputDir, $"Expression.cs");
@@ -28,7 +31,9 @@ namespace cslox.AstGenerator
             var code = new StringBuilder();
 
             code.AppendLine($"/* This is auto-generated code. Do not edit. */");
-            code.AppendLine("namespace cslox {");
+            code.AppendLine("namespace cslox");
+            code.AppendLine("{");
+            code.AppendLine();
 
             EmitLine(code, 1, $"abstract class {baseClassName}");
             EmitLine(code, 1, $"{{");
@@ -86,6 +91,7 @@ namespace cslox.AstGenerator
                 }
 
                 EmitLine(code, 1, $"}}");
+                code.AppendLine();
             }
 
             code.AppendLine("} // namespace cslox");

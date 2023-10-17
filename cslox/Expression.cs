@@ -12,64 +12,64 @@ namespace cslox
             R visitUnary(Unary expression);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
-    }
 
-    internal class Binary : Expression
-    {
-        internal Binary(Expression left, Token op, Expression right)
+        internal class Binary : Expression
         {
-            this.left = left;
-            this.op = op;
-            this.right = right;
+            internal Binary(Expression left, Token op, Expression right)
+            {
+                this.left = left;
+                this.op = op;
+                this.right = right;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitBinary(this);
+            }
+            public Expression left;
+            public Token op;
+            public Expression right;
         }
-        public override R accept<R>(IVisitor<R> visitor)
-        {
-            return visitor.visitBinary(this);
-        }
-        Expression left;
-        Token op;
-        Expression right;
-    }
 
-    internal class Grouping : Expression
-    {
-        internal Grouping(Expression exp)
+        internal class Grouping : Expression
         {
-            this.exp = exp;
+            internal Grouping(Expression exp)
+            {
+                this.exp = exp;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitGrouping(this);
+            }
+            public Expression exp;
         }
-        public override R accept<R>(IVisitor<R> visitor)
-        {
-            return visitor.visitGrouping(this);
-        }
-        Expression exp;
-    }
 
-    internal class Literal : Expression
-    {
-        internal Literal(object value)
+        internal class Literal : Expression
         {
-            this.value = value;
+            internal Literal(object value)
+            {
+                this.value = value;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitLiteral(this);
+            }
+            public object value;
         }
-        public override R accept<R>(IVisitor<R> visitor)
-        {
-            return visitor.visitLiteral(this);
-        }
-        object value;
-    }
 
-    internal class Unary : Expression
-    {
-        internal Unary(Token op, Expression right)
+        internal class Unary : Expression
         {
-            this.op = op;
-            this.right = right;
+            internal Unary(Token op, Expression right)
+            {
+                this.op = op;
+                this.right = right;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitUnary(this);
+            }
+            public Token op;
+            public Expression right;
         }
-        public override R accept<R>(IVisitor<R> visitor)
-        {
-            return visitor.visitUnary(this);
-        }
-        Token op;
-        Expression right;
-    }
 
+    }
 } // namespace cslox

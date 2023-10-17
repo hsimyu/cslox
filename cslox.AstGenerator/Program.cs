@@ -46,6 +46,8 @@ namespace cslox.AstGenerator
                       R visitUnaryExpression(Unary expression);
                   }
                   public abstract R accept<R>(IVisitor<R> visitor);
+
+                  ...
              }
              */
             EmitLine(code, 1, $"abstract class {baseClassName}");
@@ -64,8 +66,7 @@ namespace cslox.AstGenerator
                 EmitLine(code, 2, $"}}");
                 EmitLine(code, 2, $"public abstract R accept<R>(IVisitor<R> visitor);");
 
-            EmitLine(code, 1, $"}}");
-            code.AppendLine();
+                code.AppendLine();
 
             /* 
             "Binary: Expression left, Token op, Expression right"
@@ -98,26 +99,26 @@ namespace cslox.AstGenerator
                 var expressionName = splitted[0].Trim();
                 var fields = splitted[1].Split(',').Select(x => x.Trim());
 
-                EmitLine(code, 1, $"internal class {expressionName} : {baseClassName}");
-                EmitLine(code, 1, $"{{");
+                EmitLine(code, 2, $"internal class {expressionName} : {baseClassName}");
+                EmitLine(code, 2, $"{{");
 
                     // constructor
-                    EmitLine(code, 2, $"internal {expressionName}({splitted[1].Trim()})");
-                    EmitLine(code, 2, $"{{");
+                    EmitLine(code, 3, $"internal {expressionName}({splitted[1].Trim()})");
+                    EmitLine(code, 3, $"{{");
 
                         foreach(var f in fields)
                         {
                             var sub = f.Split(' ');
                             var fieldName = sub[1].Trim();
-                            EmitLine(code, 3, $"this.{fieldName} = {fieldName};");
+                            EmitLine(code, 4, $"this.{fieldName} = {fieldName};");
                         }
 
-                    EmitLine(code, 2, $"}}");
+                    EmitLine(code, 3, $"}}");
 
-                    EmitLine(code, 2, $"public override R accept<R>(IVisitor<R> visitor)");
-                    EmitLine(code, 2, $"{{");
-                        EmitLine(code, 3, $"return visitor.visit{expressionName}(this);");
-                    EmitLine(code, 2, $"}}");
+                    EmitLine(code, 3, $"public override R accept<R>(IVisitor<R> visitor)");
+                    EmitLine(code, 3, $"{{");
+                        EmitLine(code, 4, $"return visitor.visit{expressionName}(this);");
+                    EmitLine(code, 3, $"}}");
 
                     // members
                     foreach(var f in fields)
@@ -125,13 +126,14 @@ namespace cslox.AstGenerator
                         var sub = f.Split(' ');
                         var fieldType = sub[0].Trim();
                         var fieldName = sub[1].Trim();
-                        EmitLine(code, 2, $"{fieldType} {fieldName};");
+                        EmitLine(code, 3, $"public {fieldType} {fieldName};");
                     }
 
-                EmitLine(code, 1, $"}}");
+                EmitLine(code, 2, $"}}");
                 code.AppendLine();
             }
 
+            EmitLine(code, 1, $"}}");
             code.AppendLine("} // namespace cslox");
             return code.ToString();
         }
@@ -151,6 +153,9 @@ namespace cslox.AstGenerator
                     return;
                 case 3:
                     builder.AppendLine($"            {content}");
+                    return;
+                case 4:
+                    builder.AppendLine($"                {content}");
                     return;
                 default:
                     Console.Error.WriteLine($"Unsupported indent level: {level}");

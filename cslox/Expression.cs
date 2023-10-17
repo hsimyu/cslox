@@ -4,6 +4,14 @@ namespace cslox
 
     abstract class Expression
     {
+        public interface IVisitor<R>
+        {
+            R visitBinary(Binary expression);
+            R visitGrouping(Grouping expression);
+            R visitLiteral(Literal expression);
+            R visitUnary(Unary expression);
+        }
+        public abstract R accept<R>(IVisitor<R> visitor);
     }
 
     internal class Binary : Expression
@@ -13,6 +21,10 @@ namespace cslox
             this.left = left;
             this.op = op;
             this.right = right;
+        }
+        public override R accept<R>(IVisitor<R> visitor)
+        {
+            return visitor.visitBinary(this);
         }
         Expression left;
         Token op;
@@ -25,6 +37,10 @@ namespace cslox
         {
             this.exp = exp;
         }
+        public override R accept<R>(IVisitor<R> visitor)
+        {
+            return visitor.visitGrouping(this);
+        }
         Expression exp;
     }
 
@@ -33,6 +49,10 @@ namespace cslox
         internal Literal(object value)
         {
             this.value = value;
+        }
+        public override R accept<R>(IVisitor<R> visitor)
+        {
+            return visitor.visitLiteral(this);
         }
         object value;
     }
@@ -43,6 +63,10 @@ namespace cslox
         {
             this.op = op;
             this.right = right;
+        }
+        public override R accept<R>(IVisitor<R> visitor)
+        {
+            return visitor.visitUnary(this);
         }
         Token op;
         Expression right;

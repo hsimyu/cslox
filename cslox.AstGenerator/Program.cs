@@ -35,8 +35,35 @@ namespace cslox.AstGenerator
             code.AppendLine("{");
             code.AppendLine();
 
+            /*
+             abstract class Expression
+             {
+                  public interface IVisitor<R>
+                  {
+                      R visitBinaryExpression(Binary expression);
+                      R visitGroupingExpression(Grouping expression);
+                      R visitLiteralExpression(Literal expression);
+                      R visitUnaryExpression(Unary expression);
+                  }
+                  public abstract R accept<R>(IVisitor<R> visitor);
+             }
+             */
             EmitLine(code, 1, $"abstract class {baseClassName}");
             EmitLine(code, 1, $"{{");
+
+                EmitLine(code, 2, $"public interface IVisitor<R>");
+                EmitLine(code, 2, $"{{");
+
+                    foreach (var syntax in syntaxList)
+                    {
+                        var splitted = syntax.Split(':');
+                        var expressionName = splitted[0].Trim();
+                        EmitLine(code, 3, $"R visit{expressionName}({expressionName} {baseClassName.ToLower()});");
+                    }
+
+                EmitLine(code, 2, $"}}");
+                EmitLine(code, 2, $"public abstract R accept<R>(IVisitor<R> visitor);");
+
             EmitLine(code, 1, $"}}");
             code.AppendLine();
 
@@ -54,6 +81,11 @@ namespace cslox.AstGenerator
                     this.right = right;
                 }
 
+                public override R accept<R>(IVisitor<R> visitor)
+                {
+                    return visitor.visitBinary(this);
+                }
+
                 Expression left;
                 Token op;
                 Expression right;
@@ -69,26 +101,32 @@ namespace cslox.AstGenerator
                 EmitLine(code, 1, $"internal class {expressionName} : {baseClassName}");
                 EmitLine(code, 1, $"{{");
 
-                // constructor
-                EmitLine(code, 2, $"internal {expressionName}({splitted[1].Trim()})");
-                EmitLine(code, 2, $"{{");
-                foreach(var f in fields)
-                {
-                    var sub = f.Split(' ');
-                    var fieldName = sub[1].Trim();
-                    EmitLine(code, 3, $"this.{fieldName} = {fieldName};");
-                }
+                    // constructor
+                    EmitLine(code, 2, $"internal {expressionName}({splitted[1].Trim()})");
+                    EmitLine(code, 2, $"{{");
 
-                EmitLine(code, 2, $"}}");
+                        foreach(var f in fields)
+                        {
+                            var sub = f.Split(' ');
+                            var fieldName = sub[1].Trim();
+                            EmitLine(code, 3, $"this.{fieldName} = {fieldName};");
+                        }
 
-                // members
-                foreach(var f in fields)
-                {
-                    var sub = f.Split(' ');
-                    var fieldType = sub[0].Trim();
-                    var fieldName = sub[1].Trim();
-                    EmitLine(code, 2, $"{fieldType} {fieldName};");
-                }
+                    EmitLine(code, 2, $"}}");
+
+                    EmitLine(code, 2, $"public override R accept<R>(IVisitor<R> visitor)");
+                    EmitLine(code, 2, $"{{");
+                        EmitLine(code, 3, $"return visitor.visit{expressionName}(this);");
+                    EmitLine(code, 2, $"}}");
+
+                    // members
+                    foreach(var f in fields)
+                    {
+                        var sub = f.Split(' ');
+                        var fieldType = sub[0].Trim();
+                        var fieldName = sub[1].Trim();
+                        EmitLine(code, 2, $"{fieldType} {fieldName};");
+                    }
 
                 EmitLine(code, 1, $"}}");
                 code.AppendLine();

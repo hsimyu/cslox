@@ -17,7 +17,7 @@ namespace cslox.AstGenerator
             {
                 "Binary: Expression left, Token op, Expression right",
                 "Grouping: Expression exp",
-                "Literal: object value",
+                "Literal: object? value",
                 "Unary: Token op, Expression right",
             });
 

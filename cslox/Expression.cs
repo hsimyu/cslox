@@ -45,7 +45,7 @@ namespace cslox
 
         internal class Literal : Expression
         {
-            internal Literal(object value)
+            internal Literal(object? value)
             {
                 this.value = value;
             }
@@ -53,7 +53,7 @@ namespace cslox
             {
                 return visitor.visitLiteral(this);
             }
-            public object value;
+            public object? value;
         }
 
         internal class Unary : Expression

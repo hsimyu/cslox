@@ -11,8 +11,7 @@ namespace cslox
         public TokenType type;
         public object? literal;
         public string lexeme;
-
-        int line;
+        public int line;
 
         internal Token(TokenType type, string lexeme, object? literal, int line)
         {

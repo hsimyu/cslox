@@ -64,6 +64,18 @@ namespace cslox
             errorAt(line, "", message);
         }
 
+        public static void error(Token token, string message)
+        {
+            if (token.type == TokenType.EOF)
+            {
+                errorAt(token.line, " at end", message);
+            }
+            else
+            {
+                errorAt(token.line, $" at '{token.lexeme}'", message);
+            }
+        }
+
         public static void errorAt(int line, string where, string message)
         {
             Console.Error.WriteLine($"[line {line}] Error{where}: {message}");

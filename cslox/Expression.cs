@@ -2,7 +2,7 @@
 namespace cslox
 {
 
-    abstract class Expression
+    public abstract class Expression
     {
         public interface IVisitor<R>
         {
@@ -13,7 +13,7 @@ namespace cslox
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
-        internal class Binary : Expression
+        public class Binary : Expression
         {
             internal Binary(Expression left, Token op, Expression right)
             {
@@ -30,7 +30,7 @@ namespace cslox
             public Expression right;
         }
 
-        internal class Grouping : Expression
+        public class Grouping : Expression
         {
             internal Grouping(Expression exp)
             {
@@ -43,7 +43,7 @@ namespace cslox
             public Expression exp;
         }
 
-        internal class Literal : Expression
+        public class Literal : Expression
         {
             internal Literal(object? value)
             {
@@ -56,7 +56,7 @@ namespace cslox
             public object? value;
         }
 
-        internal class Unary : Expression
+        public class Unary : Expression
         {
             internal Unary(Token op, Expression right)
             {

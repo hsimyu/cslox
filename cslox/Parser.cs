@@ -13,9 +13,23 @@ namespace cslox
         List<Token> tokens = new List<Token>();
         int currentIndex = 0;
 
+        class ParseError : Exception { }
+
         public Parser(List<Token> tokens)
         {
             this.tokens = tokens;
+        }
+
+        public Expression? parse()
+        {
+            try
+            {
+                return expression();
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
 
         Expression expression()
@@ -108,7 +122,15 @@ namespace cslox
             {
                 return new Expression.Literal(previous().literal);
             }
-            return null;
+            
+            if (match(TokenType.LEFT_PAREN))
+            {
+                Expression expr = expression();
+                consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+                return new Expression.Grouping(expr);
+            }
+
+            throw error(peek(), "Expect expression.");
         }
 
         bool match(params TokenType[] types)
@@ -130,6 +152,16 @@ namespace cslox
             return previous();
         }
 
+        void consume(TokenType type, string message)
+        {
+            if (peek().type != type)
+            {
+                throw error(peek(), message);
+            }
+
+            advance();
+        }
+
         bool check(TokenType type)
         {
             if (isAtEnd()) return false;
@@ -149,6 +181,38 @@ namespace cslox
         Token previous()
         {
             return tokens[currentIndex - 1];
+        }
+
+        void synchronize()
+        {
+            advance();
+            while (!isAtEnd())
+            {
+                // セミコロンを見つけていた場合は、そこが同期ポイント
+                if (previous().type == TokenType.SEMICOLON) return;
+
+                switch (peek().type)
+                {
+                    // その他の同期ポイント一覧
+                    case TokenType.CLASS:
+                    case TokenType.FOR:
+                    case TokenType.FUN:
+                    case TokenType.IF:
+                    case TokenType.PRINT:
+                    case TokenType.RETURN:
+                    case TokenType.VAR:
+                    case TokenType.WHILE:
+                        return;
+                }
+            }
+            // EOF に到達した
+            advance();
+        }
+
+        ParseError error(Token token, string message)
+        {
+            Program.error(token, message);
+            return new ParseError();
         }
     }
 }

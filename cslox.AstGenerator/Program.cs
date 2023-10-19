@@ -36,7 +36,7 @@ namespace cslox.AstGenerator
             code.AppendLine();
 
             /*
-             abstract class Expression
+             public abstract class Expression
              {
                   public interface IVisitor<R>
                   {
@@ -50,7 +50,7 @@ namespace cslox.AstGenerator
                   ...
              }
              */
-            EmitLine(code, 1, $"abstract class {baseClassName}");
+            EmitLine(code, 1, $"public abstract class {baseClassName}");
             EmitLine(code, 1, $"{{");
 
                 EmitLine(code, 2, $"public interface IVisitor<R>");
@@ -99,7 +99,7 @@ namespace cslox.AstGenerator
                 var expressionName = splitted[0].Trim();
                 var fields = splitted[1].Split(',').Select(x => x.Trim());
 
-                EmitLine(code, 2, $"internal class {expressionName} : {baseClassName}");
+                EmitLine(code, 2, $"public class {expressionName} : {baseClassName}");
                 EmitLine(code, 2, $"{{");
 
                     // constructor

@@ -57,6 +57,14 @@ namespace cslox
             {
                 Console.WriteLine($"[{i}] {tokens[i]}");
             }
+
+            var parser = new Parser(tokens);
+            Expression? expr = parser.parse();
+
+            // 構文エラーがあれば停止
+            if (hadError || expr == null) return;
+
+            Console.WriteLine(new AstPrinter().print(expr));
         }
 
         public static void error(int line, string message)

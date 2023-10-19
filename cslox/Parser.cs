@@ -26,7 +26,7 @@ namespace cslox
             {
                 return expression();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

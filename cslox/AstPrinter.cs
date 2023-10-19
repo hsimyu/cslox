@@ -7,7 +7,7 @@ namespace cslox
 {
     internal class AstPrinter : Expression.IVisitor<string>
     {
-        string print(Expression expr)
+        public string print(Expression expr)
         {
             return expr.accept(this);
         }

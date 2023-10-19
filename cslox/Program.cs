@@ -53,11 +53,6 @@ namespace cslox
             var scanner = new Scanner(script);
             var tokens = scanner.scanTokens();
 
-            for (var i = 0; i < tokens.Count; i++)
-            {
-                Console.WriteLine($"[{i}] {tokens[i]}");
-            }
-
             var parser = new Parser(tokens);
             Expression? expr = parser.parse();
 

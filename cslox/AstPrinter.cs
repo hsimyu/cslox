@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    internal class AstPrinter : Expression.IVisitor<string>
+    public class AstPrinter : Expression.IVisitor<string>
     {
         public string print(Expression expr)
         {

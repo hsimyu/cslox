@@ -16,6 +16,7 @@ namespace cslox.AstGenerator
             var result = EmitAstTree("Expression", new string[]
             {
                 "Binary: Expression left, Token op, Expression right",
+                "Ternary: Expression cond, Token op, Expression first, Expression second",
                 "Grouping: Expression exp",
                 "Literal: object? value",
                 "Unary: Token op, Expression right",

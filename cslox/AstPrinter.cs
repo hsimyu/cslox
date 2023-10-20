@@ -16,6 +16,10 @@ namespace cslox
         {
             return parenthesize(expr.op.lexeme, expr.left, expr.right);
         }
+        public string visitTernary(Expression.Ternary expr)
+        {
+            return parenthesize(expr.op.lexeme, expr.cond, expr.first, expr.second);
+        }
         public string visitGrouping(Expression.Grouping expr)
         {
             return parenthesize("group", expr.exp);

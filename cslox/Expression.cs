@@ -7,6 +7,7 @@ namespace cslox
         public interface IVisitor<R>
         {
             R visitBinary(Binary expression);
+            R visitTernary(Ternary expression);
             R visitGrouping(Grouping expression);
             R visitLiteral(Literal expression);
             R visitUnary(Unary expression);
@@ -28,6 +29,25 @@ namespace cslox
             public Expression left;
             public Token op;
             public Expression right;
+        }
+
+        public class Ternary : Expression
+        {
+            internal Ternary(Expression cond, Token op, Expression first, Expression second)
+            {
+                this.cond = cond;
+                this.op = op;
+                this.first = first;
+                this.second = second;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitTernary(this);
+            }
+            public Expression cond;
+            public Token op;
+            public Expression first;
+            public Expression second;
         }
 
         public class Grouping : Expression

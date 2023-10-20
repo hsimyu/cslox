@@ -24,12 +24,27 @@ namespace cslox
         {
             try
             {
-                return expression();
+                return comma();
             }
             catch (Exception)
             {
                 return null;
             }
+        }
+
+        Expression comma()
+        {
+            // comma := expression ("," expression)*
+            var lhs = expression();
+
+            while (match(TokenType.COMMA))
+            {
+                Token op = previous();
+                Expression rhs = expression();
+                lhs = new Expression.Binary(lhs, op, rhs);
+            }
+
+            return lhs;
         }
 
         Expression expression()

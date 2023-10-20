@@ -120,16 +120,38 @@ namespace cslox
         Expression factor()
         {
             // factor := unary ( ("/" | "*" ) unary )*
-            var lhs = unary();
+            var lhs = binaryErrorOrUnary();
 
             while (match(TokenType.SLASH, TokenType.STAR))
             {
                 Token op = previous();
-                Expression rhs = unary();
+                Expression rhs = binaryErrorOrUnary();
                 lhs = new Expression.Binary(lhs, op, rhs);
             }
 
             return lhs;
+        }
+
+        // エラーチェック規則
+        Expression binaryErrorOrUnary()
+        {
+            // binaryErrorOrUnary := "+" | unary
+            if (match(
+                TokenType.PLUS, 
+                TokenType.EQUAL,
+                TokenType.EQUAL_EQUAL,
+                TokenType.BANG_EQUAL,
+                TokenType.SLASH,
+                TokenType.STAR,
+                TokenType.GREATER,
+                TokenType.GREATER_EQUAL, 
+                TokenType.LESS,
+                TokenType.LESS_EQUAL))
+            { 
+                throw error(previous(), "Missing left hand side.");
+            }
+
+            return unary();
         }
 
         Expression unary()

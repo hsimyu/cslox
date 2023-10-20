@@ -20,6 +20,8 @@ namespace cslox
         SEMICOLON,
         SLASH,
         STAR,
+        QUESTION,
+        COLON,
 
         // 記号1つまたは2つのトークン
         BANG,

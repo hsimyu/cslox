@@ -121,5 +121,19 @@ namespace cslox.Test
             Assert.AreEqual(TokenType.IDENTIFIER, tokens[2].type);
             Assert.AreEqual("b", tokens[2].literal);
         }
+
+        [TestMethod]
+        public void Ternary()
+        {
+            var input = "1 ? 2 : 3";
+            var scanner = new Scanner(input);
+            var tokens = scanner.scanTokens();
+
+            Assert.AreEqual(TokenType.NUMBER, tokens[0].type);
+            Assert.AreEqual(TokenType.QUESTION, tokens[1].type);
+            Assert.AreEqual(TokenType.NUMBER, tokens[2].type);
+            Assert.AreEqual(TokenType.COLON, tokens[3].type);
+            Assert.AreEqual(TokenType.NUMBER, tokens[4].type);
+        }
     }
 }

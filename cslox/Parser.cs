@@ -34,17 +34,36 @@ namespace cslox
 
         Expression comma()
         {
-            // comma := expression ("," expression)*
-            var lhs = expression();
+            // comma := conditional ("," conditional)*
+            var lhs = conditional();
 
             while (match(TokenType.COMMA))
             {
                 Token op = previous();
-                Expression rhs = expression();
+                Expression rhs = conditional();
                 lhs = new Expression.Binary(lhs, op, rhs);
             }
 
             return lhs;
+        }
+
+        Expression conditional()
+        {
+            // conditional := expression ("?" conditional ":" conditional)
+            // 右結合で、式内の一番左の ? が最初に消費される
+            // 左結合だと無限再帰してしまう
+            var cond = expression();
+
+            if (match(TokenType.QUESTION))
+            {
+                Token op = previous();
+                Expression first = conditional();
+                consume(TokenType.COLON, "Expected ':'.");
+                Expression second = conditional();
+                return new Expression.Ternary(cond, op, first, second);
+            }
+
+            return cond;
         }
 
         Expression expression()

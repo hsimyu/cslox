@@ -50,7 +50,15 @@ namespace cslox
 
         public object? visitTernary(Expression.Ternary expression)
         {
-            return null;
+            var cond = evaluate(expression.cond);
+            if (isTruthy(cond))
+            {
+                return evaluate(expression.first);
+            }
+            else
+            {
+                return evaluate(expression.second);
+            }
         }
 
         public object? visitGrouping(Expression.Grouping expression)

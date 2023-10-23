@@ -4,7 +4,10 @@ namespace cslox
 {
     internal class Program
     {
+        static Interpreter interpreter = new Interpreter();
+
         static bool hadError = false;
+        static bool hadRuntimeError = false;
 
         static void Main(string[] args)
         {
@@ -29,7 +32,8 @@ namespace cslox
             var script = File.ReadAllText(filename);
             runImpl(script);
 
-            if (hadError) Environment.Exit(1);
+            if (hadError) Environment.Exit(65);
+            if (hadRuntimeError) Environment.Exit(70);
         }
 
         static void runPrompt()
@@ -60,6 +64,14 @@ namespace cslox
             if (hadError || expr == null) return;
 
             Console.WriteLine(new AstPrinter().print(expr));
+
+            interpreter.interpret(expr);
+        }
+
+        public static void runtimeError(RuntimeError re)
+        {
+            Console.Error.WriteLine($"{re.Message}\n[line {re.token.line}]");
+            hadRuntimeError = true;
         }
 
         public static void error(int line, string message)

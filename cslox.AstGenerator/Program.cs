@@ -24,8 +24,8 @@ namespace cslox.AstGenerator
 
             EmitAstTree(outputDir, "Stmt", new string[]
             {
-                "Expression: Expression expression",
-                "Print: Expression expression",
+                "ExpressionStmt: Expression expression",
+                "PrintStmt: Expression expression",
             });
         }
 

@@ -6,33 +6,33 @@ namespace cslox
     {
         public interface IVisitor<R>
         {
-            R visitExpression(Expression stmt);
-            R visitPrint(Print stmt);
+            R visitExpressionStmt(ExpressionStmt stmt);
+            R visitPrintStmt(PrintStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
-        public class Expression : Stmt
+        public class ExpressionStmt : Stmt
         {
-            internal Expression(Expression expression)
+            internal ExpressionStmt(Expression expression)
             {
                 this.expression = expression;
             }
             public override R accept<R>(IVisitor<R> visitor)
             {
-                return visitor.visitExpression(this);
+                return visitor.visitExpressionStmt(this);
             }
             public Expression expression;
         }
 
-        public class Print : Stmt
+        public class PrintStmt : Stmt
         {
-            internal Print(Expression expression)
+            internal PrintStmt(Expression expression)
             {
                 this.expression = expression;
             }
             public override R accept<R>(IVisitor<R> visitor)
             {
-                return visitor.visitPrint(this);
+                return visitor.visitPrintStmt(this);
             }
             public Expression expression;
         }

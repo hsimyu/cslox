@@ -58,14 +58,12 @@ namespace cslox
             var tokens = scanner.scanTokens();
 
             var parser = new Parser(tokens);
-            Expression? expr = parser.parse();
+            var statements = parser.parse();
 
             // 構文エラーがあれば停止
-            if (hadError || expr == null) return;
+            if (hadError) return;
 
-            Console.WriteLine(new AstPrinter().print(expr));
-
-            interpreter.interpret(expr);
+            interpreter.interpret(statements);
         }
 
         public static void runtimeError(RuntimeError re)

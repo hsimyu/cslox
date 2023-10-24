@@ -20,16 +20,36 @@ namespace cslox
             this.tokens = tokens;
         }
 
-        public Expression? parse()
+        public List<Stmt> parse()
         {
-            try
+            List<Stmt> stmts = new List<Stmt>();
+
+            while (!isAtEnd())
             {
-                return comma();
+                stmts.Add(statement());
             }
-            catch (Exception)
-            {
-                return null;
-            }
+
+            return stmts;
+        }
+
+        Stmt statement()
+        {
+            if (match(TokenType.PRINT)) return printStatement();
+            return expressionStatement();
+        }
+
+        Stmt printStatement()
+        {
+            var value = comma();
+            consume(TokenType.SEMICOLON, "Expect ';' after value.");
+            return new Stmt.PrintStmt(value);
+        }
+
+        Stmt expressionStatement()
+        {
+            var value = comma();
+            consume(TokenType.SEMICOLON, "Expect ';' after expression.");
+            return new Stmt.ExpressionStmt(value);
         }
 
         Expression comma()

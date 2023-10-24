@@ -6,19 +6,40 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    public class Interpreter : Expression.IVisitor<object?>
+    public class Interpreter : Expression.IVisitor<object?>, Stmt.IVisitor<object?>
     {
-        public void interpret(Expression expression)
+        public void interpret(List<Stmt> stmts)
         {
             try
             {
-                object? value = evaluate(expression);
-                Console.WriteLine($"{stringify(value)}");
+                foreach(Stmt stmt in stmts)
+                {
+                    execute(stmt);
+                }
             }
             catch (RuntimeError re)
             {
                 Program.runtimeError(re);
             }
+        }
+
+        void execute(Stmt stmt)
+        {
+            stmt.accept(this);
+        }
+
+        public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
+        {
+            // NOTE: object? を返しているのは型引数に void を使えないためで、意味はない 
+            evaluate(stmt.expression);
+            return null;
+        }
+
+        public object? visitPrintStmt(Stmt.PrintStmt stmt)
+        {
+            var value = evaluate(stmt.expression);
+            Console.WriteLine(stringify(value));
+            return null;
         }
 
         public string stringify(object? value)

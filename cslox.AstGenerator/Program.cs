@@ -13,7 +13,7 @@ namespace cslox.AstGenerator
             }
 
             string outputDir = args[0];
-            var result = EmitAstTree("Expression", new string[]
+            EmitAstTree(outputDir, "Expression", new string[]
             {
                 "Binary: Expression left, Token op, Expression right",
                 "Ternary: Expression cond, Token op, Expression first, Expression second",
@@ -22,12 +22,14 @@ namespace cslox.AstGenerator
                 "Unary: Token op, Expression right",
             });
 
-            var filePath = Path.Join(outputDir, $"Expression.cs");
-            Console.WriteLine($"Generate: {filePath}");
-            File.WriteAllText(filePath, result);
+            EmitAstTree(outputDir, "Stmt", new string[]
+            {
+                "Expression: Expression expression",
+                "Print: Expression expression",
+            });
         }
 
-        static string EmitAstTree(string baseClassName, string[] syntaxList)
+        static void EmitAstTree(string outputDir, string baseClassName, string[] syntaxList)
         {
             var code = new StringBuilder();
 
@@ -136,7 +138,11 @@ namespace cslox.AstGenerator
 
             EmitLine(code, 1, $"}}");
             code.AppendLine("} // namespace cslox");
-            return code.ToString();
+
+            var result = code.ToString();
+            var filePath = Path.Join(outputDir, $"{baseClassName}.cs");
+            Console.WriteLine($"Generate: {filePath}");
+            File.WriteAllText(filePath, result);
         }
 
         static void EmitLine(StringBuilder builder, int level, string content)

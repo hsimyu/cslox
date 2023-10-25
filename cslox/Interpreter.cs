@@ -42,6 +42,11 @@ namespace cslox
             return null;
         }
 
+        public object? visitVarStmt(Stmt.VarStmt stmt)
+        {
+            return null;
+        }
+
         public string stringify(object? value)
         {
             if (value == null) return "nil";
@@ -143,6 +148,11 @@ namespace cslox
                     return -(double)(right ?? 0.0);
             }
 
+            return null;
+        }
+
+        public object? visitVariable(Expression.Variable variable)
+        {
             return null;
         }
 

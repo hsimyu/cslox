@@ -20,12 +20,14 @@ namespace cslox.AstGenerator
                 "Grouping: Expression exp",
                 "Literal: object? value",
                 "Unary: Token op, Expression right",
+                "Variable: Token name",
             });
 
             EmitAstTree(outputDir, "Stmt", new string[]
             {
                 "ExpressionStmt: Expression expression",
                 "PrintStmt: Expression expression",
+                "VarStmt: Token name, Expression initializer",
             });
         }
 

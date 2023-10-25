@@ -33,6 +33,10 @@ namespace cslox
         {
             return parenthesize(expr.op.lexeme, expr.right);
         }
+        public string visitVariable(Expression.Variable variable)
+        {
+            return variable.name.lexeme;
+        }
 
         private string parenthesize(string name, params Expression[] expressions)
         {

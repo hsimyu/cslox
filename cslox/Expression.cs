@@ -11,6 +11,7 @@ namespace cslox
             R visitGrouping(Grouping expression);
             R visitLiteral(Literal expression);
             R visitUnary(Unary expression);
+            R visitVariable(Variable expression);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -89,6 +90,19 @@ namespace cslox
             }
             public Token op;
             public Expression right;
+        }
+
+        public class Variable : Expression
+        {
+            internal Variable(Token name)
+            {
+                this.name = name;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitVariable(this);
+            }
+            public Token name;
         }
 
     }

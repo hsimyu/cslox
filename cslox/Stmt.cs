@@ -8,6 +8,7 @@ namespace cslox
         {
             R visitExpressionStmt(ExpressionStmt stmt);
             R visitPrintStmt(PrintStmt stmt);
+            R visitVarStmt(VarStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -35,6 +36,21 @@ namespace cslox
                 return visitor.visitPrintStmt(this);
             }
             public Expression expression;
+        }
+
+        public class VarStmt : Stmt
+        {
+            internal VarStmt(Token name, Expression initializer)
+            {
+                this.name = name;
+                this.initializer = initializer;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitVarStmt(this);
+            }
+            public Token name;
+            public Expression initializer;
         }
 
     }

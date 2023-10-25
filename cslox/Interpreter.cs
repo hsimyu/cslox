@@ -8,6 +8,8 @@ namespace cslox
 {
     public class Interpreter : Expression.IVisitor<object?>, Stmt.IVisitor<object?>
     {
+        Environment env = new Environment();
+
         public void interpret(List<Stmt> stmts)
         {
             try
@@ -44,6 +46,15 @@ namespace cslox
 
         public object? visitVarStmt(Stmt.VarStmt stmt)
         {
+            if (stmt.initializer != null)
+            {
+                var value = evaluate(stmt.initializer);
+                env.define(stmt.name.lexeme, value);
+            }
+            else
+            {
+                env.define(stmt.name.lexeme, null);
+            }
             return null;
         }
 
@@ -54,10 +65,6 @@ namespace cslox
             if (value is double)
             {
                 var text = value.ToString() ?? "";
-                // if (text.EndsWith(".0"))
-                // {
-                //     text = text.Substring(0, text.Length - 2);
-                // }
                 return text;
             }
 
@@ -153,7 +160,7 @@ namespace cslox
 
         public object? visitVariable(Expression.Variable variable)
         {
-            return null;
+            return env.get(variable.name);
         }
 
         object? evaluate(Expression expr)

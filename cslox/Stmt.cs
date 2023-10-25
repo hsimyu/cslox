@@ -40,7 +40,7 @@ namespace cslox
 
         public class VarStmt : Stmt
         {
-            internal VarStmt(Token name, Expression initializer)
+            internal VarStmt(Token name, Expression? initializer)
             {
                 this.name = name;
                 this.initializer = initializer;
@@ -50,7 +50,7 @@ namespace cslox
                 return visitor.visitVarStmt(this);
             }
             public Token name;
-            public Expression initializer;
+            public Expression? initializer;
         }
 
     }

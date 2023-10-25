@@ -14,7 +14,7 @@ namespace cslox
             if (args.Length > 1)
             {
                 Console.WriteLine("Usage: cslox [script/file/path.cslox]");
-                Environment.Exit(1);
+                System.Environment.Exit(1);
             }
             else if (args.Length == 1)
             {
@@ -32,8 +32,8 @@ namespace cslox
             var script = File.ReadAllText(filename);
             runImpl(script);
 
-            if (hadError) Environment.Exit(65);
-            if (hadRuntimeError) Environment.Exit(70);
+            if (hadError) System.Environment.Exit(65);
+            if (hadRuntimeError) System.Environment.Exit(70);
         }
 
         static void runPrompt()

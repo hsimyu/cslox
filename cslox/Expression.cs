@@ -6,6 +6,7 @@ namespace cslox
     {
         public interface IVisitor<R>
         {
+            R visitAssign(Assign expression);
             R visitBinary(Binary expression);
             R visitTernary(Ternary expression);
             R visitGrouping(Grouping expression);
@@ -14,6 +15,21 @@ namespace cslox
             R visitVariable(Variable expression);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
+
+        public class Assign : Expression
+        {
+            internal Assign(Token name, Expression value)
+            {
+                this.name = name;
+                this.value = value;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitAssign(this);
+            }
+            public Token name;
+            public Expression value;
+        }
 
         public class Binary : Expression
         {

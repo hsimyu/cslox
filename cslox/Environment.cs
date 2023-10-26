@@ -15,6 +15,17 @@ namespace cslox
             values[key] = value;
         }
 
+        public void assign(Token name, object? value)
+        {
+            if (values.ContainsKey(name.lexeme))
+            {
+                values[name.lexeme] = value;
+                return;
+            }
+
+            throw new RuntimeError(name, $"Undefined variable '{name.lexeme}'.");
+        }
+
         public object? get(Token name)
         {
             if (values.ContainsKey(name.lexeme))

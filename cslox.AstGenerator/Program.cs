@@ -15,6 +15,7 @@ namespace cslox.AstGenerator
             string outputDir = args[0];
             EmitAstTree(outputDir, "Expression", new string[]
             {
+                "Assign: Token name, Expression value",
                 "Binary: Expression left, Token op, Expression right",
                 "Ternary: Expression cond, Token op, Expression first, Expression second",
                 "Grouping: Expression exp",

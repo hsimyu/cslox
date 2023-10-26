@@ -71,6 +71,13 @@ namespace cslox
             return value.ToString() ?? "";
         }
 
+        public object? visitAssign(Expression.Assign assign)
+        {
+            var value = evaluate(assign.value);
+            env.assign(assign.name, value);
+            return value;
+        }
+
         public object? visitBinary(Expression.Binary expression)
         {
             var left = evaluate(expression.left);

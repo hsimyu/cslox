@@ -12,6 +12,10 @@ namespace cslox
             return expr.accept(this);
         }
 
+        public string visitAssign(Expression.Assign expr)
+        {
+            return parenthesize($"= {expr.name}", expr.value);
+        }
         public string visitBinary(Expression.Binary expr)
         {
             return parenthesize(expr.op.lexeme, expr.left, expr.right);

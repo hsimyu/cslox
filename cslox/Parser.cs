@@ -114,8 +114,35 @@ namespace cslox
 
         Expression expression()
         {
-            // expression := equality
-            return equality();
+            // expression := assignment
+            return assignment();
+        }
+
+        Expression assignment()
+        {
+            // assignment := IDENTIFIER "=" assignment | equality
+            var expr = equality();
+
+            // NOTE:
+            // 先頭のトークンが IDENTIFIER -> EQUAL かどうかで代入式を判別することはできない
+            // 例えば obj.foo = 42 とか getAddress() = 1 のような記述が行われたとき、トークンの並びはそれとは変わってくる
+            // そのため、まず式として左辺を解釈したあと、区切りとなる位置で "=" が来ているかどうかで代入式を識別する
+            if (match(TokenType.EQUAL))
+            {
+                var equals = previous();
+                Expression rhs = assignment();
+
+                if (expr is Expression.Variable)
+                {
+                    // 変数式だった場合、右辺値ではなくて左辺値として取り扱う
+                    Token name = ((Expression.Variable)expr).name;
+                    return new Expression.Assign(name, rhs);
+                }
+
+                // ここに到達するのは 1 = ... のような記述をしているとき
+                error(equals, "Invalid assignment target.");
+            }
+            return expr;
         }
 
         Expression equality()

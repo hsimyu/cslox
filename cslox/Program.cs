@@ -68,7 +68,7 @@ namespace cslox
 
         public static void runtimeError(RuntimeError re)
         {
-            Console.Error.WriteLine($"{re.Message}\n[line {re.token.line}]");
+            Console.Error.WriteLine($"{re.Message} [line {re.token.line}]");
             hadRuntimeError = true;
         }
 

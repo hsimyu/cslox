@@ -47,5 +47,24 @@ namespace cslox.Test
 
             Assert.AreEqual("42", Test(script));
         }
+
+        [TestMethod]
+        public void ScopedEnvironment()
+        {
+            var script = @"
+var a = ""global a"";
+var b = ""global b"";
+var c = ""global c"";
+
+{
+    var a = 10;
+    var b = 20;
+    c = a + b;
+}
+
+print c;
+";
+            Assert.AreEqual("30", Test(script));
+        }
     }
 }

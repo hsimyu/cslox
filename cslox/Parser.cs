@@ -70,7 +70,7 @@ namespace cslox
             List<Stmt> statements = new List<Stmt>();
             while (!check(TokenType.RIGHT_BRACE) && !isAtEnd())
             {
-                statements.Add(statement());
+                statements.Add(declaration());
             }
             consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
             return new Stmt.BlockStmt(statements);

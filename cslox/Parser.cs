@@ -350,6 +350,7 @@ namespace cslox
                     case TokenType.WHILE:
                         return;
                 }
+                advance();
             }
             // EOF に到達した
             advance();

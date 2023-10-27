@@ -51,20 +51,19 @@ namespace cslox.Test
         [TestMethod]
         public void ScopedEnvironment()
         {
-            var script = @"
-var a = ""global a"";
-var b = ""global b"";
-var c = ""global c"";
-
-{
-    var a = 10;
-    var b = 20;
-    c = a + b;
-}
-
-print c;
-";
-            Assert.AreEqual("30", Test(script));
+            string code = "";
+            code += "var a = \"global a\";";
+            code += "var b = \"global b\";";
+            code += "var c = \"global c\";";
+            code += "{";
+            code += "    var a = 10;";
+            code += "    var b = 20;";
+            code += "    c = a + b;";
+            code += "}";
+            code += "print c;";
+            Assert.AreEqual("30", Test(code));
+            code += "print a;";
+            Assert.AreEqual("global a", Test(code));
         }
     }
 }

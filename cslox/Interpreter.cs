@@ -10,64 +10,66 @@ namespace cslox
     {
         Environment env = new Environment();
 
-        public void interpret(List<Stmt> stmts)
+        public object? interpret(List<Stmt> stmts)
         {
+            object? evaluated = null;
             try
             {
                 foreach(Stmt stmt in stmts)
                 {
-                    execute(stmt);
+                    evaluated = execute(stmt);
                 }
             }
             catch (RuntimeError re)
             {
                 Program.runtimeError(re);
             }
+            return evaluated;
         }
 
-        void execute(Stmt stmt)
+        object? execute(Stmt stmt)
         {
-            stmt.accept(this);
+            return stmt.accept(this);
         }
 
-        void executeBlock(List<Stmt> statements)
+        object? executeBlock(List<Stmt> statements)
         {
             var newEnv = new Environment(env);
             var prevEnv = env;
 
+            object? evaluated = null;
             try
             {
                 env = newEnv;
 
                 foreach(Stmt stmt in statements)
                 {
-                    execute(stmt);
+                    evaluated = execute(stmt);
                 }
             }
             finally
             {
                 env = prevEnv;
             }
+            return evaluated;
         }
 
         public object? visitBlockStmt(Stmt.BlockStmt block)
         {
-            executeBlock(block.statements);
-            return null;
+            return executeBlock(block.statements);
         }
 
         public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
         {
-            // NOTE: object? を返しているのは型引数に void を使えないためで、意味はない 
-            evaluate(stmt.expression);
-            return null;
+            return evaluate(stmt.expression);
         }
 
         public object? visitPrintStmt(Stmt.PrintStmt stmt)
         {
             var value = evaluate(stmt.expression);
-            Console.WriteLine(stringify(value));
-            return null;
+            var output = stringify(value);
+            Console.WriteLine(output);
+            return output; // テスト用
         }
 
         public object? visitVarStmt(Stmt.VarStmt stmt)

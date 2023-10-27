@@ -6,11 +6,25 @@ namespace cslox
     {
         public interface IVisitor<R>
         {
+            R visitBlockStmt(BlockStmt stmt);
             R visitExpressionStmt(ExpressionStmt stmt);
             R visitPrintStmt(PrintStmt stmt);
             R visitVarStmt(VarStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
+
+        public class BlockStmt : Stmt
+        {
+            internal BlockStmt(List<Stmt> statements)
+            {
+                this.statements = statements;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitBlockStmt(this);
+            }
+            public List<Stmt> statements;
+        }
 
         public class ExpressionStmt : Stmt
         {

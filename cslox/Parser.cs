@@ -61,7 +61,19 @@ namespace cslox
         Stmt statement()
         {
             if (match(TokenType.PRINT)) return printStatement();
+            if (match(TokenType.LEFT_BRACE)) return blockStatement();
             return expressionStatement();
+        }
+
+        Stmt blockStatement()
+        {
+            List<Stmt> statements = new List<Stmt>();
+            while (!check(TokenType.RIGHT_BRACE) && !isAtEnd())
+            {
+                statements.Add(statement());
+            }
+            consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
+            return new Stmt.BlockStmt(statements);
         }
 
         Stmt printStatement()

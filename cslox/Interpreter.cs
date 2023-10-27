@@ -30,6 +30,32 @@ namespace cslox
             stmt.accept(this);
         }
 
+        void executeBlock(List<Stmt> statements)
+        {
+            var newEnv = new Environment(env);
+            var prevEnv = env;
+
+            try
+            {
+                env = newEnv;
+
+                foreach(Stmt stmt in statements)
+                {
+                    execute(stmt);
+                }
+            }
+            finally
+            {
+                env = prevEnv;
+            }
+        }
+
+        public object? visitBlockStmt(Stmt.BlockStmt block)
+        {
+            executeBlock(block.statements);
+            return null;
+        }
+
         public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
         {
             // NOTE: object? を返しているのは型引数に void を使えないためで、意味はない 

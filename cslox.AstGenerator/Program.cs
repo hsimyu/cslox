@@ -26,6 +26,7 @@ namespace cslox.AstGenerator
 
             EmitAstTree(outputDir, "Stmt", new string[]
             {
+                "BlockStmt: List<Stmt> statements",
                 "ExpressionStmt: Expression expression",
                 "PrintStmt: Expression expression",
                 "VarStmt: Token name, Expression? initializer",

@@ -28,7 +28,7 @@ namespace cslox.Test
         }
 
         [TestMethod]
-        public void Add()
+        public void VarMul()
         {
             var script = @"
                 var a = 10;
@@ -36,6 +36,16 @@ namespace cslox.Test
                 a * b;";
 
             Assert.AreEqual(10, Convert.ToInt32(Test(script)));
+        }
+
+        [TestMethod]
+        public void PrintVar()
+        {
+            var script = @"
+                var a = 10 + 23 + 9;
+                print a;";
+
+            Assert.AreEqual("42", Test(script));
         }
     }
 }

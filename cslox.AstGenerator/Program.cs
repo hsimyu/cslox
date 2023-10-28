@@ -32,6 +32,7 @@ namespace cslox.AstGenerator
                 "PrintStmt: Expression expression",
                 "VarStmt: Token name, Expression? initializer",
                 "IfStmt: Expression condition, Stmt thenStmt, Stmt? elseStmt",
+                "WhileStmt: Expression condition, Stmt body",
             });
         }
 

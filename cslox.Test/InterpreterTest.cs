@@ -109,5 +109,13 @@ namespace cslox.Test
             code = "print nil and 2;";
             Assert.AreEqual("nil", Test(code));
         }
+
+        [TestMethod]
+        public void While()
+        {
+            string code;
+            code = "var a = 0; while (a < 10) { a = a + 1; } print a;";
+            Assert.AreEqual("10", Test(code));
+        }
     }
 }

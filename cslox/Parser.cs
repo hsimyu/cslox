@@ -61,6 +61,7 @@ namespace cslox
         Stmt statement()
         {
             if (match(TokenType.IF)) return ifStatement();
+            if (match(TokenType.WHILE)) return whileStatement();
             if (match(TokenType.PRINT)) return printStatement();
             if (match(TokenType.LEFT_BRACE)) return blockStatement();
             return expressionStatement();
@@ -92,6 +93,17 @@ namespace cslox
             }
 
             return new Stmt.IfStmt(cond, thenStmt, elseStmt);
+        }
+
+        Stmt whileStatement()
+        {
+            // whileStmt := "while" "(" expression ")" statement
+            consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+            Expression cond = expression();
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after while condition.");
+
+            Stmt body = statement();
+            return new Stmt.WhileStmt(cond, body);
         }
 
         Stmt printStatement()

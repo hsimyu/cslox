@@ -11,6 +11,7 @@ namespace cslox
             R visitPrintStmt(PrintStmt stmt);
             R visitVarStmt(VarStmt stmt);
             R visitIfStmt(IfStmt stmt);
+            R visitWhileStmt(WhileStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -83,6 +84,21 @@ namespace cslox
             public Expression condition;
             public Stmt thenStmt;
             public Stmt? elseStmt;
+        }
+
+        public class WhileStmt : Stmt
+        {
+            internal WhileStmt(Expression condition, Stmt body)
+            {
+                this.condition = condition;
+                this.body = body;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitWhileStmt(this);
+            }
+            public Expression condition;
+            public Stmt body;
         }
 
     }

@@ -72,6 +72,15 @@ namespace cslox
             return null;
         }
 
+        public object? visitWhileStmt(Stmt.WhileStmt stmt)
+        {
+            while (isTruthy(evaluate(stmt.condition)))
+            {
+                execute(stmt.body);
+            }
+            return null;
+        }
+
         public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
         {
             return evaluate(stmt.expression);

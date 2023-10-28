@@ -49,6 +49,16 @@ namespace cslox.Test
         }
 
         [TestMethod]
+        public void VarAssign()
+        {
+            var script = @"
+                var a = ""aaa"" + ""bbb"";
+                print a;";
+
+            Assert.AreEqual("aaabbb", Test(script));
+        }
+
+        [TestMethod]
         public void ScopedEnvironment()
         {
             string code = "";

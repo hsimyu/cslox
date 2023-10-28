@@ -60,6 +60,7 @@ namespace cslox
 
         Stmt statement()
         {
+            if (match(TokenType.IF)) return ifStatement();
             if (match(TokenType.PRINT)) return printStatement();
             if (match(TokenType.LEFT_BRACE)) return blockStatement();
             return expressionStatement();
@@ -74,6 +75,23 @@ namespace cslox
             }
             consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
             return new Stmt.BlockStmt(statements);
+        }
+
+        Stmt ifStatement()
+        {
+            // ifStmt := "if" "(" expression ")" statement ( "else" statement )?
+            consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+            Expression cond = expression();
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
+
+            Stmt thenStmt = statement();
+            Stmt? elseStmt = null;
+            if (match(TokenType.ELSE))
+            {
+                elseStmt = statement();
+            }
+
+            return new Stmt.IfStmt(cond, thenStmt, elseStmt);
         }
 
         Stmt printStatement()

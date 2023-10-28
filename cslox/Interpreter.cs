@@ -59,6 +59,19 @@ namespace cslox
             return executeBlock(block.statements);
         }
 
+        public object? visitIfStmt(Stmt.IfStmt ifStmt)
+        {
+            if (isTruthy(evaluate(ifStmt.condition)))
+            {
+                return execute(ifStmt.thenStmt);
+            }
+            else if (ifStmt.elseStmt != null)
+            {
+                return execute(ifStmt.elseStmt);
+            }
+            return null;
+        }
+
         public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
         {
             return evaluate(stmt.expression);

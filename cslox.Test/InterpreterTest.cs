@@ -75,5 +75,17 @@ namespace cslox.Test
             code += "print a;";
             Assert.AreEqual("global a", Test(code));
         }
+
+        [TestMethod]
+        public void If()
+        {
+            string code;
+
+            code = "var a = 42; if (a == 42) { 1; } else { 0; }";
+            Assert.AreEqual(1, Convert.ToInt32(Test(code)));
+
+            code = "var a = 1; if (a == 42) { 1; } else { 0; }";
+            Assert.AreEqual(0, Convert.ToInt32(Test(code)));
+        }
     }
 }

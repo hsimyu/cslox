@@ -10,6 +10,7 @@ namespace cslox
             R visitExpressionStmt(ExpressionStmt stmt);
             R visitPrintStmt(PrintStmt stmt);
             R visitVarStmt(VarStmt stmt);
+            R visitIfStmt(IfStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -65,6 +66,23 @@ namespace cslox
             }
             public Token name;
             public Expression? initializer;
+        }
+
+        public class IfStmt : Stmt
+        {
+            internal IfStmt(Expression condition, Stmt thenStmt, Stmt? elseStmt)
+            {
+                this.condition = condition;
+                this.thenStmt = thenStmt;
+                this.elseStmt = elseStmt;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitIfStmt(this);
+            }
+            public Expression condition;
+            public Stmt thenStmt;
+            public Stmt? elseStmt;
         }
 
     }

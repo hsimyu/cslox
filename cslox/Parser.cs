@@ -150,8 +150,8 @@ namespace cslox
 
         Expression assignment()
         {
-            // assignment := IDENTIFIER "=" assignment | equality
-            var expr = equality();
+            // assignment := IDENTIFIER "=" assignment | logic_or
+            var expr = logic_or();
 
             // NOTE:
             // 先頭のトークンが IDENTIFIER -> EQUAL かどうかで代入式を判別することはできない
@@ -173,6 +173,36 @@ namespace cslox
                 error(equals, "Invalid assignment target.");
             }
             return expr;
+        }
+
+        Expression logic_or()
+        {
+            // logic_or := logic_and ("or" logic_and)*
+            var lhs = logic_and();
+
+            while (match(TokenType.OR))
+            {
+                Token op = previous();
+                var rhs = logic_and();
+                lhs = new Expression.Logical(lhs, op, rhs);
+            }
+
+            return lhs;
+        }
+
+        Expression logic_and()
+        {
+            // logic_and = equality ("and" equality)*
+            var lhs = equality();
+
+            while (match(TokenType.AND))
+            {
+                Token op = previous();
+                var rhs = equality();
+                lhs = new Expression.Logical(lhs, op, rhs);
+            }
+
+            return lhs;
         }
 
         Expression equality()

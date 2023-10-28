@@ -28,6 +28,10 @@ namespace cslox
         {
             return parenthesize("group", expr.exp);
         }
+        public string visitLogical(Expression.Logical expr)
+        {
+            return parenthesize(expr.op.lexeme, expr.left, expr.right);
+        }
         public string visitLiteral(Expression.Literal expr)
         {
             if (expr.value == null) return "nil";

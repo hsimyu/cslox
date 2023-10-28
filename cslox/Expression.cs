@@ -10,6 +10,7 @@ namespace cslox
             R visitBinary(Binary expression);
             R visitTernary(Ternary expression);
             R visitGrouping(Grouping expression);
+            R visitLogical(Logical expression);
             R visitLiteral(Literal expression);
             R visitUnary(Unary expression);
             R visitVariable(Variable expression);
@@ -78,6 +79,23 @@ namespace cslox
                 return visitor.visitGrouping(this);
             }
             public Expression exp;
+        }
+
+        public class Logical : Expression
+        {
+            internal Logical(Expression left, Token op, Expression right)
+            {
+                this.left = left;
+                this.op = op;
+                this.right = right;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitLogical(this);
+            }
+            public Expression left;
+            public Token op;
+            public Expression right;
         }
 
         public class Literal : Expression

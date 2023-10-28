@@ -87,5 +87,27 @@ namespace cslox.Test
             code = "var a = 1; if (a == 42) { 1; } else { 0; }";
             Assert.AreEqual(0, Convert.ToInt32(Test(code)));
         }
+
+        [TestMethod]
+        public void LogicOr()
+        {
+            string code;
+            code = "print \"hi\" or 2;";
+            Assert.AreEqual("hi", Test(code));
+
+            code = "print nil or 2;";
+            Assert.AreEqual("2", Test(code));
+        }
+
+        [TestMethod]
+        public void LogicAnd()
+        {
+            string code;
+            code = "print \"hi\" and 2;";
+            Assert.AreEqual("2", Test(code));
+
+            code = "print nil and 2;";
+            Assert.AreEqual("nil", Test(code));
+        }
     }
 }

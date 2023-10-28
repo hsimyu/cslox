@@ -167,6 +167,23 @@ namespace cslox
             return null;
         }
 
+        public object? visitLogical(Expression.Logical expression)
+        {
+            var left = evaluate(expression.left);
+            if (expression.op.type == TokenType.OR)
+            {
+                // OR -> 左辺が true なら短絡
+                if (isTruthy(left)) return left;
+                return evaluate(expression.right);
+            }
+            else
+            {
+                // AND -> 左辺が false なら短絡
+                if (!isTruthy(left)) return left;
+                return evaluate(expression.right);
+            }
+        }
+
         public object? visitTernary(Expression.Ternary expression)
         {
             var cond = evaluate(expression.cond);

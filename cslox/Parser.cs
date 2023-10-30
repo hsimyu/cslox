@@ -60,6 +60,7 @@ namespace cslox
 
         Stmt statement()
         {
+            if (match(TokenType.FOR)) return forStatement();
             if (match(TokenType.IF)) return ifStatement();
             if (match(TokenType.WHILE)) return whileStatement();
             if (match(TokenType.PRINT)) return printStatement();
@@ -76,6 +77,58 @@ namespace cslox
             }
             consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
             return new Stmt.BlockStmt(statements);
+        }
+
+        Stmt forStatement()
+        {
+            // forStmt := "for" "(" statement? ";" expression? ";" expression? ")" statement
+            consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
+
+            Stmt? initializer;
+            if (match(TokenType.SEMICOLON))
+            {
+                initializer = null;
+            }
+            else if (match(TokenType.VAR))
+            {
+                initializer = varDeclaration();
+            }
+            else
+            {
+                initializer = expressionStatement();
+            }
+
+            Expression? condition = null;
+            if (!check(TokenType.SEMICOLON))
+            {
+                condition = expression();
+            }
+            consume(TokenType.SEMICOLON, "Expect ';' after loop conditoin");
+
+            Expression? increment = null;
+            if (!check(TokenType.SEMICOLON))
+            {
+                increment = expression();
+            }
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.");
+
+            var body = statement();
+
+            // for 文のセマンティクスを while 文で表現する
+            if (increment != null)
+            {
+                body = new Stmt.BlockStmt(new List<Stmt> { body, new Stmt.ExpressionStmt(increment) });
+            }
+
+            if (condition == null) condition = new Expression.Literal(true);
+            body = new Stmt.WhileStmt(condition, body);
+
+            if (initializer != null)
+            {
+                body = new Stmt.BlockStmt(new List<Stmt> { initializer, body });
+            }
+
+            return body;
         }
 
         Stmt ifStatement()

@@ -117,5 +117,13 @@ namespace cslox.Test
             code = "var a = 0; while (a < 10) { a = a + 1; } print a;";
             Assert.AreEqual("10", Test(code));
         }
+
+        [TestMethod]
+        public void For()
+        {
+            string code;
+            code = "var a = 0; var temp; for (var b = 1; a < 10; b = temp + b) { print a; temp = a; a = b; } print a;";
+            Assert.AreEqual("13", Test(code));
+        }
     }
 }

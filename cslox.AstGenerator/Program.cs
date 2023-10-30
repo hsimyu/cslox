@@ -18,6 +18,7 @@ namespace cslox.AstGenerator
                 "Assign: Token name, Expression value",
                 "Binary: Expression left, Token op, Expression right",
                 "Ternary: Expression cond, Token op, Expression first, Expression second",
+                "Call: Expression callee, Token paren, List<Expression> arguments",
                 "Grouping: Expression exp",
                 "Logical: Expression left, Token op, Expression right",
                 "Literal: object? value",

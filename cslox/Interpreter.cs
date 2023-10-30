@@ -206,6 +206,33 @@ namespace cslox
             }
         }
 
+        public object? visitCall(Expression.Call expression)
+        {
+            var callee = evaluate(expression.callee);
+
+            List<object?> args = new List<object?>();
+            foreach (var arg in expression.arguments)
+            {
+                args.Add(evaluate(arg));
+            }
+
+            if (callee is not Callable)
+            {
+                throw new RuntimeError(expression.paren, "Can only cal functions and classes.");
+            }
+
+            Callable f = (Callable)callee;
+
+            // 引数の個数チェック
+            if (args.Count != f.arity())
+            {
+                throw new RuntimeError(expression.paren, $"Expected {f.arity()} arguments but got {args.Count}.");
+            }
+
+            return f.call(this, args);
+        }
+
+
         public object? visitGrouping(Expression.Grouping expression)
         {
             return evaluate(expression.exp);

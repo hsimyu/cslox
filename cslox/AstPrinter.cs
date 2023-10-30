@@ -24,6 +24,10 @@ namespace cslox
         {
             return parenthesize(expr.op.lexeme, expr.cond, expr.first, expr.second);
         }
+        public string visitCall(Expression.Call expr)
+        {
+            return parenthesize(expr.callee.accept(this), expr.arguments.ToArray());
+        }
         public string visitGrouping(Expression.Grouping expr)
         {
             return parenthesize("group", expr.exp);

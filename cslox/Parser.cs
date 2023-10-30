@@ -354,7 +354,7 @@ namespace cslox
 
         Expression unary()
         {
-            // unary := ( "!" | "-" ) unary | primary
+            // unary := ( "!" | "-" ) unary | call
             if (match(TokenType.BANG, TokenType.MINUS))
             {
                 Token op = previous();
@@ -362,7 +362,46 @@ namespace cslox
                 return new Expression.Unary(op, rhs);
             }
 
-            return primary();
+            return call();
+        }
+
+        Expression call()
+        {
+            // call := primary ( "(" arguments? ")" )*
+            var expr = primary();
+
+            while (true)
+            {
+                // "(" に出会うたびに再帰的に関数コールと認識する
+                if (match(TokenType.LEFT_PAREN))
+                {
+                    expr = finishCall(expr);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return expr;
+        }
+
+        Expression finishCall(Expression callee)
+        {
+            List<Expression> args = new List<Expression>();
+            if (!check(TokenType.RIGHT_PAREN))
+            {
+                do
+                {
+                    if (args.Count >= 255)
+                    {
+                        error(peek(), "Can't have more than 255 arguments.");
+                    }
+                    args.Add(expression());
+                } while (match(TokenType.COMMA));
+            }
+
+            Token paren = consume(TokenType.RIGHT_PAREN, "Expect ')' after function arguments.");
+            return new Expression.Call(callee, paren, args);
         }
 
         Expression primary()

@@ -155,5 +155,27 @@ print result;
 ";
             Assert.AreEqual("13", Test(code));
         }
+
+        [TestMethod]
+        public void Closure()
+        {
+            string code;
+            code = @"
+fun makeCounter() {
+var i = 0;
+fun count() {
+  i = i + 1;
+  print i;
+  return i;
+}
+return count;
+}
+
+var counter = makeCounter();
+counter();
+counter();
+";
+            Assert.AreEqual(2.0, Test(code));
+        }
     }
 }

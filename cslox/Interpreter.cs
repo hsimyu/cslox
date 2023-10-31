@@ -89,7 +89,7 @@ namespace cslox
 
         public object? visitFunctionStmt(Stmt.FunctionStmt stmt)
         {
-            LoxFunction f = new LoxFunction(stmt);
+            LoxFunction f = new LoxFunction(stmt, env);
             env.define(stmt.name.lexeme, f);
             return null;
         }

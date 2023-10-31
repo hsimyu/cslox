@@ -137,7 +137,7 @@ print ""Hi, "" + first;
 
 sayHi(""Dear"", ""Reader"");
 ";
-            Assert.AreEqual("13", Test(code));
+            Assert.AreEqual("Hi, Dear", Test(code));
         }
     }
 }

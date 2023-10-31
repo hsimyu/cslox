@@ -42,6 +42,7 @@ namespace cslox
             }
             catch (ParseError e)
             {
+                Console.Error.WriteLine(e.Message);
                 synchronize();
                 return null;
             }
@@ -69,7 +70,7 @@ namespace cslox
 
             List<Token> arguments = new List<Token>();
 
-            if (check(TokenType.RIGHT_PAREN))
+            if (!check(TokenType.RIGHT_PAREN))
             {
                 do
                 {

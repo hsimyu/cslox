@@ -139,5 +139,21 @@ sayHi(""Dear"", ""Reader"");
 ";
             Assert.AreEqual("Hi, Dear", Test(code));
         }
+
+        [TestMethod]
+        public void Return()
+        {
+            string code;
+            code = @"
+fun fib(n) {
+if (n <= 1) return n;
+return fib(n-2) + fib(n-1);
+}
+
+var result = fib(7);
+print result;
+";
+            Assert.AreEqual("13", Test(code));
+        }
     }
 }

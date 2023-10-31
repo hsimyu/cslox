@@ -28,7 +28,19 @@ namespace cslox
                 // 仮引数に対応する値を環境に束縛する
                 environment.define(declaration.arguments[i].lexeme, arguments[i]);
             }
-            return interpreter.executeBlock(declaration.body, environment); ;
+
+            try
+            {
+                interpreter.executeBlock(declaration.body, environment); ;
+            }
+            catch (Return r)
+            {
+                // return の実行を例外として捕捉する
+                return r.value;
+            }
+
+            // return がなければ nil を返す
+            return null;
         }
 
         public override string ToString()

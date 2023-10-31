@@ -10,7 +10,7 @@ namespace cslox
     {
         Stmt.FunctionStmt declaration;
 
-        LoxFunction(Stmt.FunctionStmt declaration)
+        internal LoxFunction(Stmt.FunctionStmt declaration)
         {
             this.declaration = declaration;
         }

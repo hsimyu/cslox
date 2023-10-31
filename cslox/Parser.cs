@@ -36,8 +36,8 @@ namespace cslox
         {
             try
             {
-                if (match(TokenType.VAR)) return varDeclaration();
                 if (match(TokenType.FUN)) return function("function");
+                if (match(TokenType.VAR)) return varDeclaration();
                 return statement();
             }
             catch (ParseError e)

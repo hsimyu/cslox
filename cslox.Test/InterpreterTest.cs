@@ -125,5 +125,19 @@ namespace cslox.Test
             code = "var a = 0; var temp; for (var b = 1; a < 10; b = temp + b) { print a; temp = a; a = b; } print a;";
             Assert.AreEqual("13", Test(code));
         }
+
+        [TestMethod]
+        public void FunctionDecl()
+        {
+            string code;
+            code = @"
+fun sayHi(first, last) {
+print ""Hi, "" + first;
+}
+
+sayHi(""Dear"", ""Reader"");
+";
+            Assert.AreEqual("13", Test(code));
+        }
     }
 }

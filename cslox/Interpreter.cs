@@ -41,9 +41,8 @@ namespace cslox
             return stmt.accept(this);
         }
 
-        internal object? executeBlock(List<Stmt> statements, Environment env)
+        internal object? executeBlock(List<Stmt> statements, Environment newEnv)
         {
-            var newEnv = new Environment(env);
             var prevEnv = env;
 
             object? evaluated = null;
@@ -65,7 +64,7 @@ namespace cslox
 
         public object? visitBlockStmt(Stmt.BlockStmt block)
         {
-            return executeBlock(block.statements, env);
+            return executeBlock(block.statements, new Environment(env));
         }
 
         public object? visitIfStmt(Stmt.IfStmt ifStmt)
@@ -92,6 +91,8 @@ namespace cslox
 
         public object? visitFunctionStmt(Stmt.FunctionStmt stmt)
         {
+            LoxFunction f = new LoxFunction(stmt);
+            env.define(stmt.name.lexeme, f);
             return null;
         }
 

@@ -8,7 +8,7 @@ namespace cslox
 {
     public class Interpreter : Expression.IVisitor<object?>, Stmt.IVisitor<object?>
     {
-        Environment globalEnv = new Environment();
+        internal Environment globalEnv = new Environment();
         Environment env;
 
         public Interpreter()
@@ -36,12 +36,12 @@ namespace cslox
             return evaluated;
         }
 
-        object? execute(Stmt stmt)
+        internal object? execute(Stmt stmt)
         {
             return stmt.accept(this);
         }
 
-        object? executeBlock(List<Stmt> statements)
+        internal object? executeBlock(List<Stmt> statements, Environment env)
         {
             var newEnv = new Environment(env);
             var prevEnv = env;
@@ -65,7 +65,7 @@ namespace cslox
 
         public object? visitBlockStmt(Stmt.BlockStmt block)
         {
-            return executeBlock(block.statements);
+            return executeBlock(block.statements, env);
         }
 
         public object? visitIfStmt(Stmt.IfStmt ifStmt)
@@ -87,6 +87,11 @@ namespace cslox
             {
                 execute(stmt.body);
             }
+            return null;
+        }
+
+        public object? visitFunctionStmt(Stmt.FunctionStmt stmt)
+        {
             return null;
         }
 

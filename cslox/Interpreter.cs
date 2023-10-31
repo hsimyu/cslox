@@ -8,7 +8,16 @@ namespace cslox
 {
     public class Interpreter : Expression.IVisitor<object?>, Stmt.IVisitor<object?>
     {
-        Environment env = new Environment();
+        Environment globalEnv = new Environment();
+        Environment env;
+
+        public Interpreter()
+        {
+            this.env = globalEnv;
+
+            globalEnv.define("clock", new NativeFunction.Clock());
+            globalEnv.define("timespan", new NativeFunction.TimeSpan());
+        }
 
         public object? interpret(List<Stmt> stmts)
         {

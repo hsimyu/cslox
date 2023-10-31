@@ -12,6 +12,7 @@ namespace cslox
             R visitVarStmt(VarStmt stmt);
             R visitIfStmt(IfStmt stmt);
             R visitWhileStmt(WhileStmt stmt);
+            R visitFunctionStmt(FunctionStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -99,6 +100,23 @@ namespace cslox
             }
             public Expression condition;
             public Stmt body;
+        }
+
+        public class FunctionStmt : Stmt
+        {
+            internal FunctionStmt(Token name, List<Token> arguments, List<Stmt> body)
+            {
+                this.name = name;
+                this.arguments = arguments;
+                this.body = body;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitFunctionStmt(this);
+            }
+            public Token name;
+            public List<Token> arguments;
+            public List<Stmt> body;
         }
 
     }

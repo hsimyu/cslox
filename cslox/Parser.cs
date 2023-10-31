@@ -37,6 +37,7 @@ namespace cslox
             try
             {
                 if (match(TokenType.VAR)) return varDeclaration();
+                if (match(TokenType.FUN)) return function("function");
                 return statement();
             }
             catch (ParseError e)
@@ -58,17 +59,45 @@ namespace cslox
             return new Stmt.VarStmt(name, initializer);
         }
 
+        Stmt.FunctionStmt function(string kind)
+        {
+            // funDecl := "fun" function
+            // function := IDENTIFIER "(" parameters? ")" block
+            // parameters := IDENTIFIER ( "," IDENTIFIER )*
+            Token name = consume(TokenType.IDENTIFIER, $"Expect {kind} name after 'fun'.");
+            consume(TokenType.LEFT_PAREN, $"Expect '(' after {kind} name.");
+
+            List<Token> arguments = new List<Token>();
+
+            if (check(TokenType.RIGHT_PAREN))
+            {
+                do
+                {
+                    if (arguments.Count >= 255)
+                    {
+                        error(peek(), "Can't have more than 255 parameters.");
+                    }
+                    arguments.Add(consume(TokenType.IDENTIFIER, "Expect parameter name."));
+                } while (match(TokenType.COMMA));
+            }
+            consume(TokenType.RIGHT_PAREN, $"Expect ')' after parameters.");
+
+            consume(TokenType.LEFT_BRACE, $"Expect '{{' before {kind} body");
+            var body = block();
+            return new Stmt.FunctionStmt(name, arguments, body);
+        }
+
         Stmt statement()
         {
             if (match(TokenType.FOR)) return forStatement();
             if (match(TokenType.IF)) return ifStatement();
             if (match(TokenType.WHILE)) return whileStatement();
             if (match(TokenType.PRINT)) return printStatement();
-            if (match(TokenType.LEFT_BRACE)) return blockStatement();
+            if (match(TokenType.LEFT_BRACE)) return new Stmt.BlockStmt(block());
             return expressionStatement();
         }
 
-        Stmt blockStatement()
+        List<Stmt> block()
         {
             List<Stmt> statements = new List<Stmt>();
             while (!check(TokenType.RIGHT_BRACE) && !isAtEnd())
@@ -76,7 +105,7 @@ namespace cslox
                 statements.Add(declaration());
             }
             consume(TokenType.RIGHT_BRACE, "Expect '}' after block.");
-            return new Stmt.BlockStmt(statements);
+            return statements;
         }
 
         Stmt forStatement()

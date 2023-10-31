@@ -34,6 +34,7 @@ namespace cslox.AstGenerator
                 "VarStmt: Token name, Expression? initializer",
                 "IfStmt: Expression condition, Stmt thenStmt, Stmt? elseStmt",
                 "WhileStmt: Expression condition, Stmt body",
+                "FunctionStmt: Token name, List<Token> arguments, List<Stmt> body",
             });
         }
 

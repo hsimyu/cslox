@@ -13,6 +13,7 @@ namespace cslox
             R visitIfStmt(IfStmt stmt);
             R visitWhileStmt(WhileStmt stmt);
             R visitFunctionStmt(FunctionStmt stmt);
+            R visitReturnStmt(ReturnStmt stmt);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -117,6 +118,21 @@ namespace cslox
             public Token name;
             public List<Token> arguments;
             public List<Stmt> body;
+        }
+
+        public class ReturnStmt : Stmt
+        {
+            internal ReturnStmt(Token keyword, Expression? expr)
+            {
+                this.keyword = keyword;
+                this.expr = expr;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitReturnStmt(this);
+            }
+            public Token keyword;
+            public Expression? expr;
         }
 
     }

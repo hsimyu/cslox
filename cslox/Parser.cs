@@ -94,6 +94,7 @@ namespace cslox
             if (match(TokenType.IF)) return ifStatement();
             if (match(TokenType.WHILE)) return whileStatement();
             if (match(TokenType.PRINT)) return printStatement();
+            if (match(TokenType.RETURN)) return returnStatement();
             if (match(TokenType.LEFT_BRACE)) return new Stmt.BlockStmt(block());
             return expressionStatement();
         }
@@ -194,6 +195,21 @@ namespace cslox
             var value = comma();
             consume(TokenType.SEMICOLON, "Expect ';' after value.");
             return new Stmt.PrintStmt(value);
+        }
+
+        Stmt returnStatement()
+        {
+            // return := "return" expression? ";"
+            Token keyword = previous();
+            Expression? expr = null;
+
+            if (!check(TokenType.SEMICOLON))
+            {
+                expr = comma();
+            }
+
+            consume(TokenType.SEMICOLON, "Expect ';' after return value.");
+            return new Stmt.ReturnStmt(keyword, expr);
         }
 
         Stmt expressionStatement()

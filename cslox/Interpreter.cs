@@ -11,6 +11,9 @@ namespace cslox
         internal Environment globalEnv = new Environment();
         Environment env;
 
+        // 式と、そこに含まれるローカル変数の解決時の深度の紐づけを保存しておく辞書
+        Dictionary<Expression, int> locals = new Dictionary<Expression, int>();
+
         public Interpreter()
         {
             this.env = globalEnv;
@@ -57,6 +60,11 @@ namespace cslox
             {
                 env = prevEnv;
             }
+        }
+
+        internal void resolve(Expression expr, int depth)
+        {
+            locals.Add(expr, depth);
         }
 
         public object? visitBlockStmt(Stmt.BlockStmt block)

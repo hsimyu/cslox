@@ -155,7 +155,16 @@ namespace cslox
         public object? visitAssign(Expression.Assign assign)
         {
             var value = evaluate(assign.value);
-            env.assign(assign.name, value);
+
+            if (locals.TryGetValue(assign, out var distance))
+            {
+                env.assignAt(distance, assign.name, value);
+            }
+            else
+            {
+                env.assign(assign.name, value);
+            }
+
             return value;
         }
 
@@ -292,7 +301,19 @@ namespace cslox
 
         public object? visitVariable(Expression.Variable variable)
         {
-            return env.get(variable.name);
+            return lookUpVariable(variable.name, variable);
+        }
+
+        object? lookUpVariable(Token name, Expression expr)
+        {
+            if (locals.TryGetValue(expr, out var distance))
+            {
+                return env.getAt(distance, name.lexeme);
+            }
+            else
+            {
+                return globalEnv.get(name);
+            }
         }
 
         object? evaluate(Expression expr)

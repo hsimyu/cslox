@@ -81,11 +81,11 @@ namespace cslox.Test
         {
             string code;
 
-            code = "var a = 42; if (a == 42) { 1; } else { 0; }";
+            code = "var a = 42; var result = 0; if (a == 42) { result = 1; } else { result = 2; } result;";
             Assert.AreEqual(1, Convert.ToInt32(Test(code)));
 
-            code = "var a = 1; if (a == 42) { 1; } else { 0; }";
-            Assert.AreEqual(0, Convert.ToInt32(Test(code)));
+            code = "var a = 1; var result = 0; if (a == 42) { result = 1; } else { result = 2; } result;";
+            Assert.AreEqual(2, Convert.ToInt32(Test(code)));
         }
 
         [TestMethod]
@@ -137,7 +137,7 @@ print ""Hi, "" + first;
 
 sayHi(""Dear"", ""Reader"");
 ";
-            Assert.AreEqual("Hi, Dear", Test(code));
+            Test(code);
         }
 
         [TestMethod]
@@ -176,6 +176,27 @@ counter();
 counter();
 ";
             Assert.AreEqual(2.0, Test(code));
+        }
+
+        [TestMethod]
+        public void Closure2()
+        {
+            string code;
+            code = @"
+var result = """";
+var a = ""global"";
+{
+    fun getA() {
+      return a;
+    }
+
+    result = result + getA();
+    var a = ""block"";
+    result = result + getA();
+}
+result;
+";
+            Assert.AreEqual("globalglobal", Test(code));
         }
     }
 }

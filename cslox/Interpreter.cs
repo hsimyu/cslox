@@ -73,6 +73,14 @@ namespace cslox
             return null;
         }
 
+        public object? visitClassStmt(Stmt.ClassStmt classStmt)
+        {
+            env.define(classStmt.name.lexeme, null);
+            var klass = new LoxClass(classStmt.name.lexeme);
+            env.assign(classStmt.name, klass);
+            return null;
+        }
+
         public object? visitIfStmt(Stmt.IfStmt ifStmt)
         {
             if (isTruthy(evaluate(ifStmt.condition)))

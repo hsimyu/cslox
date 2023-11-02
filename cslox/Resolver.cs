@@ -160,6 +160,13 @@ namespace cslox
             currentFunctionType = enclosingFunctionType;
         }
 
+        public object? visitClassStmt(Stmt.ClassStmt stmt)
+        {
+            declare(stmt.name);
+            define(stmt.name);
+            return null;
+        }
+
         public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
         {
             resolve(stmt.expression);

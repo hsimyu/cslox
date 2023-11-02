@@ -36,6 +36,7 @@ namespace cslox
         {
             try
             {
+                if (match(TokenType.CLASS)) return classDeclaration();
                 if (match(TokenType.FUN)) return function("function");
                 if (match(TokenType.VAR)) return varDeclaration();
                 return statement();
@@ -46,6 +47,22 @@ namespace cslox
                 synchronize();
                 return null;
             }
+        }
+
+        Stmt classDeclaration()
+        {
+            // classDecl := "class" IDENTIFIER "{" function* "}"
+            Token name = consume(TokenType.IDENTIFIER, "Expect variable name after 'class'.");
+            consume(TokenType.LEFT_BRACE, "Expect '{' before class body.");
+
+            var methods = new List<Stmt.FunctionStmt>();
+            while (!check(TokenType.RIGHT_BRACE) && !isAtEnd())
+            {
+                methods.Add(function("method"));
+            }
+
+            consume(TokenType.RIGHT_BRACE, "Expect '}' after class body.");
+            return new Stmt.ClassStmt(name, methods);
         }
 
         Stmt varDeclaration()

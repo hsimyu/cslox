@@ -7,6 +7,7 @@ namespace cslox
         public interface IVisitor<R>
         {
             R visitBlockStmt(BlockStmt stmt);
+            R visitClassStmt(ClassStmt stmt);
             R visitExpressionStmt(ExpressionStmt stmt);
             R visitPrintStmt(PrintStmt stmt);
             R visitVarStmt(VarStmt stmt);
@@ -28,6 +29,21 @@ namespace cslox
                 return visitor.visitBlockStmt(this);
             }
             public List<Stmt> statements;
+        }
+
+        public class ClassStmt : Stmt
+        {
+            internal ClassStmt(Token name, List<Stmt.FunctionStmt> methods)
+            {
+                this.name = name;
+                this.methods = methods;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitClassStmt(this);
+            }
+            public Token name;
+            public List<Stmt.FunctionStmt> methods;
         }
 
         public class ExpressionStmt : Stmt

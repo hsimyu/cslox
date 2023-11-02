@@ -102,13 +102,13 @@ namespace cslox
         void resolveLocal(Expression expr, Token name)
         {
             // 上から順にスタックを見ていって、スコープ内に定義されていたら解決する
-            for (int i = scopes.Count - 1; i >= 0; i--)
+            for (int i = 0; i < scopes.Count; i++)
             {
                 if (scopes.ElementAt(i).ContainsKey(name.lexeme))
                 {
                     // 解決結果をインタプリタに保存する
                     // 第 2 引数はスコープ数、つまり参照しているスコープと定義しているスコープがどのくらい離れているかを表す
-                    interpreter.resolve(expr, scopes.Count - 1 - i);
+                    interpreter.resolve(expr, i);
                     return;
                 }
             }

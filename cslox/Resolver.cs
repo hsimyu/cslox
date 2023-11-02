@@ -7,12 +7,12 @@ using System.Xml.Schema;
 
 namespace cslox
 {
-    internal class Resolver : Expression.IVisitor<object?>, Stmt.IVisitor<object?>
+    public class Resolver : Expression.IVisitor<object?>, Stmt.IVisitor<object?>
     {
         Interpreter interpreter;
         Stack<Dictionary<string, bool>> scopes = new Stack<Dictionary<string, bool>>();
 
-        internal Resolver(Interpreter interpreter)
+        public Resolver(Interpreter interpreter)
         {
             this.interpreter = interpreter;
         }
@@ -25,7 +25,7 @@ namespace cslox
             return null;
         }
 
-        void resolve(List<Stmt> stmts)
+        public void resolve(List<Stmt> stmts)
         {
             foreach (var statement in stmts)
             {
@@ -75,7 +75,16 @@ namespace cslox
         void define(Token name)
         {
             if (scopes.Count == 0) return;
-            scopes.Peek().Add(name.lexeme, true); // 初期化完了
+
+            var scope = scopes.Peek();
+            if (scope.ContainsKey(name.lexeme))
+            {
+                scope[name.lexeme] = true;
+            }
+            else
+            {
+                scope.Add(name.lexeme, true); // 初期化完了
+            }
         }
 
         public object? visitVariable(Expression.Variable expr)

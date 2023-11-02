@@ -24,6 +24,10 @@ namespace cslox.Test
         {
             var result = ParseImpl(input);
             Assert.IsNotNull(result);
+
+            var resolver = new Resolver(impl);
+            resolver.resolve(result);
+
             return impl.interpret(result);
         }
 

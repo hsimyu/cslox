@@ -162,7 +162,7 @@ namespace cslox
             }
             else
             {
-                env.assign(assign.name, value);
+                globalEnv.assign(assign.name, value);
             }
 
             return value;
@@ -308,7 +308,7 @@ namespace cslox
         {
             if (locals.TryGetValue(expr, out var distance))
             {
-                return env.getAt(distance, name.lexeme);
+                return env.getAt(distance, name);
             }
             else
             {

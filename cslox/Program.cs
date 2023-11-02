@@ -66,6 +66,9 @@ namespace cslox
             var resolver = new Resolver(interpreter);
             resolver.resolve(statements);
 
+            // 解決エラーがあれば停止
+            if (hadError) return;
+
             interpreter.interpret(statements);
         }
 

@@ -12,6 +12,14 @@ namespace cslox
         Interpreter interpreter;
         Stack<Dictionary<string, bool>> scopes = new Stack<Dictionary<string, bool>>();
 
+        FunctionType currentFunctionType = FunctionType.None;
+
+        enum FunctionType
+        {
+            None,
+            Function,
+        }
+
         public Resolver(Interpreter interpreter)
         {
             this.interpreter = interpreter;
@@ -69,6 +77,11 @@ namespace cslox
             if (scopes.Count == 0) return;
 
             var scope = scopes.Peek();
+            if (scope.ContainsKey(name.lexeme))
+            {
+                // すでに定義済みのものを再定義しようとした
+                Program.error(name, "Already a variable with this name in this scope.");
+            }
             scope.Add(name.lexeme, false); // bool は not ready yet マーク
         }
 
@@ -125,12 +138,15 @@ namespace cslox
         {
             declare(stmt.name);
             define(stmt.name);
-            resolveFunction(stmt);
+            resolveFunction(stmt, FunctionType.Function);
             return null;
         }
 
-        void resolveFunction(Stmt.FunctionStmt stmt)
+        void resolveFunction(Stmt.FunctionStmt stmt, FunctionType type)
         {
+            var enclosingFunctionType = currentFunctionType;
+            currentFunctionType = type;
+
             // スコープの導入と、ブロック内のパラメータの束縛
             beginScope();
             foreach (Token param in stmt.arguments)
@@ -140,6 +156,8 @@ namespace cslox
             }
             resolve(stmt.body);
             endScope();
+
+            currentFunctionType = enclosingFunctionType;
         }
 
         public object? visitExpressionStmt(Stmt.ExpressionStmt stmt)
@@ -168,6 +186,11 @@ namespace cslox
 
         public object? visitReturnStmt(Stmt.ReturnStmt returnStmt)
         {
+            if (currentFunctionType == FunctionType.None)
+            {
+                Program.error(returnStmt.keyword, "Can't return from top-level code.");
+            }
+
             if (returnStmt.expr != null)
             {
                 resolve(returnStmt.expr);

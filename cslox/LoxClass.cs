@@ -6,13 +6,24 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    internal class LoxClass
+    internal class LoxClass : LoxCallable
     {
-        string name;
+        internal string name;
 
         internal LoxClass(string name)
         {
             this.name = name;
+        }
+
+        public int arity()
+        {
+            return 0;
+        }
+
+        public object? call(Interpreter interpreter, List<object?> arguments)
+        {
+            var instance = new LoxInstance(this);
+            return instance;
         }
 
         public override string ToString()

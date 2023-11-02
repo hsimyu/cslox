@@ -4,7 +4,7 @@ namespace cslox
 {
     internal class NativeFunction
     {
-        internal class Clock : Callable
+        internal class Clock : LoxCallable
         {
             public int arity()
             {
@@ -22,7 +22,7 @@ namespace cslox
             }
         }
 
-        internal class TimeSpan : Callable
+        internal class TimeSpan : LoxCallable
         {
             public int arity()
             {

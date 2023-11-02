@@ -264,12 +264,12 @@ namespace cslox
                 args.Add(evaluate(arg));
             }
 
-            if (callee is not Callable)
+            if (callee is not LoxCallable)
             {
                 throw new RuntimeError(expression.paren, "Can only cal functions and classes.");
             }
 
-            Callable f = (Callable)callee;
+            LoxCallable f = (LoxCallable)callee;
 
             // 引数の個数チェック
             if (args.Count != f.arity())

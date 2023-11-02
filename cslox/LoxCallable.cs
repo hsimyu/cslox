@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    interface Callable
+    interface LoxCallable
     {
         int arity();
         object? call(Interpreter interpreter, List<object?> arguments);

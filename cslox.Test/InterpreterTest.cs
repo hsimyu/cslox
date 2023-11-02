@@ -202,5 +202,16 @@ result;
 ";
             Assert.AreEqual("globalglobal", Test(code));
         }
+
+        [TestMethod]
+        public void ClassConstruct()
+        {
+            string code;
+            code = @"
+class Bagel {}
+print Bagel();
+";
+            Assert.AreEqual("Bagel instance", Test(code));
+        }
     }
 }

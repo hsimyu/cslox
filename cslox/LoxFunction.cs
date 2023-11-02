@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace cslox
 {
-    internal class LoxFunction : Callable
+    internal class LoxFunction : LoxCallable
     {
         Stmt.FunctionStmt declaration;
         Environment closure;

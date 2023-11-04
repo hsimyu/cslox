@@ -237,6 +237,15 @@ namespace cslox
             return null;
         }
 
+        public object? visitGet(Expression.Get get)
+        {
+            // プロパティ名は静的に (Resolver が) 解決しない
+            // 実行時に Interpreter が動的に解決する
+            // そのため、ここでは name は調べない
+            resolve(get.obj);
+            return null;
+        }
+
         public object? visitGrouping(Expression.Grouping expr)
         {
             resolve(expr.exp);

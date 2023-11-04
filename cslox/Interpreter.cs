@@ -280,6 +280,16 @@ namespace cslox
             return f.call(this, args);
         }
 
+        public object? visitGet(Expression.Get expression)
+        {
+            var obj = evaluate(expression.obj);
+            if (obj is LoxInstance)
+            {
+                return ((LoxInstance)obj).get(expression.name);
+            }
+
+            throw new RuntimeError(expression.name, "Only instance have properties");
+        }
 
         public object? visitGrouping(Expression.Grouping expression)
         {

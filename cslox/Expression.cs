@@ -10,6 +10,7 @@ namespace cslox
             R visitBinary(Binary expression);
             R visitTernary(Ternary expression);
             R visitCall(Call expression);
+            R visitGet(Get expression);
             R visitGrouping(Grouping expression);
             R visitLogical(Logical expression);
             R visitLiteral(Literal expression);
@@ -84,6 +85,21 @@ namespace cslox
             public Expression callee;
             public Token paren;
             public List<Expression> arguments;
+        }
+
+        public class Get : Expression
+        {
+            internal Get(Expression obj, Token name)
+            {
+                this.obj = obj;
+                this.name = name;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitGet(this);
+            }
+            public Expression obj;
+            public Token name;
         }
 
         public class Grouping : Expression

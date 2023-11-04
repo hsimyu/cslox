@@ -430,7 +430,7 @@ namespace cslox
 
         Expression call()
         {
-            // call := primary ( "(" arguments? ")" )*
+            // call := primary ( "(" arguments? ")" | "." IDENTIFIER )*
             var expr = primary();
 
             while (true)
@@ -439,6 +439,12 @@ namespace cslox
                 if (match(TokenType.LEFT_PAREN))
                 {
                     expr = finishCall(expr);
+                }
+                else if (match(TokenType.DOT))
+                {
+                    // クラスのプロパティアクセス
+                    Token name = consume(TokenType.IDENTIFIER, "Expect property name after '.'");
+                    expr = new Expression.Get(expr, name);
                 }
                 else
                 {

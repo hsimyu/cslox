@@ -28,6 +28,10 @@ namespace cslox
         {
             return parenthesize(expr.callee.accept(this), expr.arguments.ToArray());
         }
+        public string visitGet(Expression.Get expr)
+        {
+            return $"{expr.accept(this)}.{expr.name.lexeme}";
+        }
         public string visitGrouping(Expression.Grouping expr)
         {
             return parenthesize("group", expr.exp);

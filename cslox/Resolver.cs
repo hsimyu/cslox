@@ -18,6 +18,7 @@ namespace cslox
         {
             None,
             Function,
+            Initializer,
             Method,
         }
 
@@ -183,6 +184,10 @@ namespace cslox
             foreach (var method in stmt.methods)
             {
                 var declaration = FunctionType.Method;
+                if (method.name.lexeme.Equals("init"))
+                {
+                    declaration = FunctionType.Initializer;
+                }
                 resolveFunction(method, declaration);
             }
 
@@ -225,6 +230,10 @@ namespace cslox
 
             if (returnStmt.expr != null)
             {
+                if (currentFunctionType == FunctionType.Initializer)
+                {
+                    Program.error(returnStmt.keyword, "Can't return a value from an initializer.");
+                }
                 resolve(returnStmt.expr);
             }
             return null;

@@ -47,6 +47,7 @@ namespace cslox
             catch (Return r)
             {
                 // return の実行を例外として捕捉する
+                if (isInitializer) return closure.getAt(0, "this"); // init 関数が空 return した場合は this を返す
                 return r.value;
             }
 

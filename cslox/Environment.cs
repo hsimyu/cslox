@@ -61,13 +61,9 @@ namespace cslox
             throw new RuntimeError(name, $"Undefined variable '{name.lexeme}'.");
         }
 
-        public object? getAt(int distance, Token name)
+        public object? getAt(int distance, string name)
         {
-            var a = ancestor(distance);
-            if (a.values.ContainsKey(name.lexeme))
-                return a.values[name.lexeme];
-
-            throw new RuntimeError(name, $"Undefined variable '{name.lexeme}'.");
+            return ancestor(distance).values[name];
         }
 
         Environment ancestor(int distance)

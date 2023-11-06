@@ -80,7 +80,7 @@ namespace cslox
             var methods = new Dictionary<string, LoxFunction>();
             foreach(var method in classStmt.methods)
             {
-                var f = new LoxFunction(method, env);
+                var f = new LoxFunction(method, env, method.name.lexeme.Equals("init"));
                 methods.Add(method.name.lexeme, f);
             }
 
@@ -113,7 +113,7 @@ namespace cslox
 
         public object? visitFunctionStmt(Stmt.FunctionStmt stmt)
         {
-            LoxFunction f = new LoxFunction(stmt, env);
+            LoxFunction f = new LoxFunction(stmt, env, false);
             env.define(stmt.name.lexeme, f);
             return null;
         }
@@ -352,7 +352,7 @@ namespace cslox
         {
             if (locals.TryGetValue(expr, out var distance))
             {
-                return env.getAt(distance, name);
+                return env.getAt(distance, name.lexeme);
             }
             else
             {

@@ -10,18 +10,20 @@ namespace cslox
     {
         Stmt.FunctionStmt declaration;
         Environment closure;
+        bool isInitializer = false;
 
-        internal LoxFunction(Stmt.FunctionStmt declaration, Environment closure)
+        internal LoxFunction(Stmt.FunctionStmt declaration, Environment closure, bool isInitializer)
         {
             this.declaration = declaration;
             this.closure = closure;
+            this.isInitializer = isInitializer;
         }
 
         internal LoxFunction bind(LoxInstance instance)
         {
             var newEnvironment = new Environment(closure);
             newEnvironment.define("this", instance);
-            return new LoxFunction(declaration, newEnvironment);
+            return new LoxFunction(declaration, newEnvironment, isInitializer);
         }
 
         public int arity()
@@ -47,6 +49,8 @@ namespace cslox
                 // return の実行を例外として捕捉する
                 return r.value;
             }
+
+            if (isInitializer) return closure.getAt(0, "this");
 
             // return がなければ nil を返す
             return null;

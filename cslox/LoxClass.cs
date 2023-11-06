@@ -27,12 +27,19 @@ namespace cslox
 
         public int arity()
         {
-            return 0;
+            var init = findMethod("init");
+            if (init == null) return 0;
+            return init.arity();
         }
 
         public object? call(Interpreter interpreter, List<object?> arguments)
         {
             var instance = new LoxInstance(this);
+            var init = findMethod("init"); // "init" を初期化関数の標準名とする
+            if (init != null)
+            {
+                init.bind(instance).call(interpreter, arguments);
+            }
             return instance;
         }
 

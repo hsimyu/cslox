@@ -254,7 +254,6 @@ print result;
 class Cake
 {
    taste() {
-       print ""Crunch crunch crunch!"";
        var adj = ""delicious"";
        return ""The "" + this.flavor + "" cake is "" + adj + ""!"";
    }
@@ -262,6 +261,29 @@ class Cake
 
 var c = Cake();
 c.flavor = ""German chocolate"";
+print c.taste();
+";
+            Assert.AreEqual("The German chocolate cake is delicious!", Test(code));
+        }
+
+        [TestMethod]
+        public void ClassInit()
+        {
+            string code;
+            code = @"
+class Cake
+{
+   init(f) {
+       this.flavor = f;
+   }
+
+   taste() {
+       var adj = ""delicious"";
+       return ""The "" + this.flavor + "" cake is "" + adj + ""!"";
+   }
+}
+
+var c = Cake(""German chocolate"");
 print c.taste();
 ";
             Assert.AreEqual("The German chocolate cake is delicious!", Test(code));

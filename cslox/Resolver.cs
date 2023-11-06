@@ -21,6 +21,14 @@ namespace cslox
             Method,
         }
 
+        ClassType currentClassType = ClassType.None;
+
+        enum ClassType
+        {
+            None,
+            Class,
+        }
+
         public Resolver(Interpreter interpreter)
         {
             this.interpreter = interpreter;
@@ -163,6 +171,9 @@ namespace cslox
 
         public object? visitClassStmt(Stmt.ClassStmt stmt)
         {
+            var enclosingClassType = currentClassType;
+            currentClassType = ClassType.Class;
+
             declare(stmt.name);
             define(stmt.name);
 
@@ -177,6 +188,7 @@ namespace cslox
 
             endScope();
 
+            currentClassType = enclosingClassType;
             return null;
         }
 
@@ -268,6 +280,11 @@ namespace cslox
 
         public object? visitThis(Expression.This expr)
         {
+            if (currentClassType == ClassType.None)
+            {
+                Program.error(expr.keyword, "Can't use 'this' outside of a class.");
+                return null;
+            }
             resolveLocal(expr, expr.keyword);
             return null;
         }

@@ -312,6 +312,11 @@ namespace cslox
             return value;
         }
 
+        public object? visitThis(Expression.This expr)
+        {
+            return lookUpVariable(expr.keyword, expr);
+        }
+
         public object? visitGrouping(Expression.Grouping expression)
         {
             return evaluate(expression.exp);

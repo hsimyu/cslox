@@ -36,6 +36,10 @@ namespace cslox
         {
             return $"(= {expr.obj.accept(this)}.{expr.name.lexeme} {expr.value.accept(this)})";
         }
+        public string visitThis(Expression.This expr)
+        {
+            return "this";
+        }
         public string visitGrouping(Expression.Grouping expr)
         {
             return parenthesize("group", expr.exp);

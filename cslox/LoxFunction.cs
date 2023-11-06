@@ -17,6 +17,13 @@ namespace cslox
             this.closure = closure;
         }
 
+        internal LoxFunction bind(LoxInstance instance)
+        {
+            var newEnvironment = new Environment(closure);
+            newEnvironment.define("this", instance);
+            return new LoxFunction(declaration, newEnvironment);
+        }
+
         public int arity()
         {
             return declaration.arguments.Count;

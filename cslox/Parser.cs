@@ -481,7 +481,7 @@ namespace cslox
 
         Expression primary()
         {
-            // primary := NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
+            // primary := NUMBER | STRING | "true" | "false" | "nil" | IDENTIFIER | "this" |  "(" expression ")"
             if (match(TokenType.FALSE)) return new Expression.Literal(false);
             if (match(TokenType.TRUE)) return new Expression.Literal(true);
             if (match(TokenType.NIL)) return new Expression.Literal(null);
@@ -489,6 +489,11 @@ namespace cslox
             if (match(TokenType.NUMBER, TokenType.STRING))
             {
                 return new Expression.Literal(previous().literal);
+            }
+
+            if (match(TokenType.THIS))
+            {
+                return new Expression.This(previous());
             }
 
             if (match(TokenType.IDENTIFIER))

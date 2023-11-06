@@ -164,6 +164,10 @@ namespace cslox
         public object? visitClassStmt(Stmt.ClassStmt stmt)
         {
             declare(stmt.name);
+            define(stmt.name);
+
+            beginScope();
+            scopes.Peek().Add("this", true);
 
             foreach (var method in stmt.methods)
             {
@@ -171,7 +175,8 @@ namespace cslox
                 resolveFunction(method, declaration);
             }
 
-            define(stmt.name);
+            endScope();
+
             return null;
         }
 
@@ -258,6 +263,12 @@ namespace cslox
         {
             resolve(set.value);
             resolve(set.obj);
+            return null;
+        }
+
+        public object? visitThis(Expression.This expr)
+        {
+            resolveLocal(expr, expr.keyword);
             return null;
         }
 

@@ -10,13 +10,14 @@ namespace cslox
             R visitBinary(Binary expression);
             R visitTernary(Ternary expression);
             R visitCall(Call expression);
-            R visitGet(Get expression);
-            R visitSet(Set expression);
             R visitGrouping(Grouping expression);
             R visitLogical(Logical expression);
             R visitLiteral(Literal expression);
             R visitUnary(Unary expression);
             R visitVariable(Variable expression);
+            R visitGet(Get expression);
+            R visitSet(Set expression);
+            R visitThis(This expression);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -88,38 +89,6 @@ namespace cslox
             public List<Expression> arguments;
         }
 
-        public class Get : Expression
-        {
-            internal Get(Expression obj, Token name)
-            {
-                this.obj = obj;
-                this.name = name;
-            }
-            public override R accept<R>(IVisitor<R> visitor)
-            {
-                return visitor.visitGet(this);
-            }
-            public Expression obj;
-            public Token name;
-        }
-
-        public class Set : Expression
-        {
-            internal Set(Expression obj, Token name, Expression value)
-            {
-                this.obj = obj;
-                this.name = name;
-                this.value = value;
-            }
-            public override R accept<R>(IVisitor<R> visitor)
-            {
-                return visitor.visitSet(this);
-            }
-            public Expression obj;
-            public Token name;
-            public Expression value;
-        }
-
         public class Grouping : Expression
         {
             internal Grouping(Expression exp)
@@ -189,6 +158,51 @@ namespace cslox
                 return visitor.visitVariable(this);
             }
             public Token name;
+        }
+
+        public class Get : Expression
+        {
+            internal Get(Expression obj, Token name)
+            {
+                this.obj = obj;
+                this.name = name;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitGet(this);
+            }
+            public Expression obj;
+            public Token name;
+        }
+
+        public class Set : Expression
+        {
+            internal Set(Expression obj, Token name, Expression value)
+            {
+                this.obj = obj;
+                this.name = name;
+                this.value = value;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitSet(this);
+            }
+            public Expression obj;
+            public Token name;
+            public Expression value;
+        }
+
+        public class This : Expression
+        {
+            internal This(Token keyword)
+            {
+                this.keyword = keyword;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitThis(this);
+            }
+            public Token keyword;
         }
 
     }

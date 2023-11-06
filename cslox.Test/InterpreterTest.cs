@@ -245,5 +245,26 @@ print result;
 ";
             Assert.AreEqual("42", Test(code));
         }
+
+        [TestMethod]
+        public void ClassThis()
+        {
+            string code;
+            code = @"
+class Cake
+{
+   taste() {
+       print ""Crunch crunch crunch!"";
+       var adj = ""delicious"";
+       return ""The "" + this.flavor + "" cake is "" + adj + ""!"";
+   }
+}
+
+var c = Cake();
+c.flavor = ""German chocolate"";
+print c.taste();
+";
+            Assert.AreEqual("The German chocolate cake is delicious!", Test(code));
+        }
     }
 }

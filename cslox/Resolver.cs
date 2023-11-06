@@ -246,6 +246,13 @@ namespace cslox
             return null;
         }
 
+        public object? visitSet(Expression.Set set)
+        {
+            resolve(set.value);
+            resolve(set.obj);
+            return null;
+        }
+
         public object? visitGrouping(Expression.Grouping expr)
         {
             resolve(expr.exp);

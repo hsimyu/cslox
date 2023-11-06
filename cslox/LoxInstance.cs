@@ -9,19 +9,24 @@ namespace cslox
     internal class LoxInstance
     {
         LoxClass klass;
-        Dictionary<string, object> fields = new Dictionary<string, object>();
+        Dictionary<string, object?> fields = new Dictionary<string, object?>();
 
         internal LoxInstance(LoxClass klass)
         {
             this.klass = klass;
         }
 
-        internal object get(Token name)
+        internal object? get(Token name)
         {
             if (fields.ContainsKey(name.lexeme))
                 return fields[name.lexeme];
 
             throw new RuntimeError(name, $"Undefined property '{name.lexeme}'.");
+        }
+
+        internal void set(Token name, object? value)
+        {
+            fields[name.lexeme] = value;
         }
 
         public override string ToString()

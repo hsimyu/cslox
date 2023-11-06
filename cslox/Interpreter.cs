@@ -291,6 +291,19 @@ namespace cslox
             throw new RuntimeError(expression.name, "Only instance have properties");
         }
 
+        public object? visitSet(Expression.Set expression)
+        {
+            var obj = evaluate(expression.obj);
+            if(obj is not LoxInstance)
+            {
+                throw new RuntimeError(expression.name, "Only instance have fields");
+            }
+
+            var value = evaluate(expression.value);
+            ((LoxInstance)obj).set(expression.name, value);
+            return value;
+        }
+
         public object? visitGrouping(Expression.Grouping expression)
         {
             return evaluate(expression.exp);

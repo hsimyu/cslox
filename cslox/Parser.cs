@@ -278,7 +278,7 @@ namespace cslox
 
         Expression assignment()
         {
-            // assignment := IDENTIFIER "=" assignment | logic_or
+            // assignment := (call ".")? IDENTIFIER "=" assignment | logic_or
             var expr = logic_or();
 
             // NOTE:
@@ -295,6 +295,12 @@ namespace cslox
                     // 変数式だった場合、右辺値ではなくて左辺値として取り扱う
                     Token name = ((Expression.Variable)expr).name;
                     return new Expression.Assign(name, rhs);
+                }
+                else if (expr is Expression.Get)
+                {
+                    // オブジェクトのゲッターだったとき、左辺値つまりセッターとして取り扱う
+                    var get = (Expression.Get)expr;
+                    return new Expression.Set(get.obj, get.name, rhs);
                 }
 
                 // ここに到達するのは 1 = ... のような記述をしているとき

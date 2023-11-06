@@ -213,5 +213,18 @@ print Bagel();
 ";
             Assert.AreEqual("Bagel instance", Test(code));
         }
+
+        [TestMethod]
+        public void ClassSetter()
+        {
+            string code;
+            code = @"
+class Bagel {}
+var value = Bagel();
+value.test = 1;
+print value.test;
+";
+            Assert.AreEqual("1", Test(code));
+        }
     }
 }

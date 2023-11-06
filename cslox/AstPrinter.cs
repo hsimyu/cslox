@@ -30,7 +30,11 @@ namespace cslox
         }
         public string visitGet(Expression.Get expr)
         {
-            return $"{expr.accept(this)}.{expr.name.lexeme}";
+            return $"{expr.obj.accept(this)}.{expr.name.lexeme}";
+        }
+        public string visitSet(Expression.Set expr)
+        {
+            return $"(= {expr.obj.accept(this)}.{expr.name.lexeme} {expr.value.accept(this)})";
         }
         public string visitGrouping(Expression.Grouping expr)
         {

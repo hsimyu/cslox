@@ -76,7 +76,15 @@ namespace cslox
         public object? visitClassStmt(Stmt.ClassStmt classStmt)
         {
             env.define(classStmt.name.lexeme, null);
-            var klass = new LoxClass(classStmt.name.lexeme);
+
+            var methods = new Dictionary<string, LoxFunction>();
+            foreach(var method in classStmt.methods)
+            {
+                var f = new LoxFunction(method, env);
+                methods.Add(method.name.lexeme, f);
+            }
+
+            var klass = new LoxClass(classStmt.name.lexeme, methods);
             env.assign(classStmt.name, klass);
             return null;
         }

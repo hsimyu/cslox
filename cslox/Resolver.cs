@@ -18,6 +18,7 @@ namespace cslox
         {
             None,
             Function,
+            Method,
         }
 
         public Resolver(Interpreter interpreter)
@@ -163,6 +164,13 @@ namespace cslox
         public object? visitClassStmt(Stmt.ClassStmt stmt)
         {
             declare(stmt.name);
+
+            foreach (var method in stmt.methods)
+            {
+                var declaration = FunctionType.Method;
+                resolveFunction(method, declaration);
+            }
+
             define(stmt.name);
             return null;
         }

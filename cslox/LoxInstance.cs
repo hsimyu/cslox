@@ -21,6 +21,9 @@ namespace cslox
             if (fields.ContainsKey(name.lexeme))
                 return fields[name.lexeme];
 
+            var method = klass.findMethod(name.lexeme);
+            if (method != null) return method;
+
             throw new RuntimeError(name, $"Undefined property '{name.lexeme}'.");
         }
 

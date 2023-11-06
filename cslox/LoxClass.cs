@@ -9,10 +9,20 @@ namespace cslox
     internal class LoxClass : LoxCallable
     {
         internal string name;
+        Dictionary<string, LoxFunction> methods = new Dictionary<string, LoxFunction>();
 
-        internal LoxClass(string name)
+        internal LoxClass(string name, Dictionary<string, LoxFunction> methods)
         {
             this.name = name;
+            this.methods = methods;
+        }
+
+        internal LoxFunction? findMethod(string name)
+        {
+            if (methods.ContainsKey(name))
+                return methods[name];
+
+            return null;
         }
 
         public int arity()

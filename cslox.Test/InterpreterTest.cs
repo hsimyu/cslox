@@ -226,5 +226,24 @@ print value.test;
 ";
             Assert.AreEqual("1", Test(code));
         }
+
+        [TestMethod]
+        public void ClassMethod()
+        {
+            string code;
+            code = @"
+class Bacon
+{
+   eat() {
+       print ""Crunch crunch crunch!"";
+       return 42;
+   }
+}
+var b = Bacon();
+var result = b.eat();
+print result;
+";
+            Assert.AreEqual("42", Test(code));
+        }
     }
 }

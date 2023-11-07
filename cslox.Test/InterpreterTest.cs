@@ -294,11 +294,17 @@ print c.taste();
         {
             string code;
             code = @"
-class Base {}
+class Base {
+    cook() {
+        return ""Fry"";
+    }
+}
 
 class Derive < Base {}
+
+print Derive().cook();
 ";
-            Test(code);
+            Assert.AreEqual("Fry", Test(code));
         }
     }
 }

@@ -33,9 +33,10 @@ namespace cslox
 
         public class ClassStmt : Stmt
         {
-            internal ClassStmt(Token name, List<Stmt.FunctionStmt> methods)
+            internal ClassStmt(Token name, Expression.Variable? superclass, List<Stmt.FunctionStmt> methods)
             {
                 this.name = name;
+                this.superclass = superclass;
                 this.methods = methods;
             }
             public override R accept<R>(IVisitor<R> visitor)
@@ -43,6 +44,7 @@ namespace cslox
                 return visitor.visitClassStmt(this);
             }
             public Token name;
+            public Expression.Variable? superclass;
             public List<Stmt.FunctionStmt> methods;
         }
 

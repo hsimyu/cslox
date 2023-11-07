@@ -288,5 +288,17 @@ print c.taste();
 ";
             Assert.AreEqual("The German chocolate cake is delicious!", Test(code));
         }
+
+        [TestMethod]
+        public void Superclass()
+        {
+            string code;
+            code = @"
+class Base {}
+
+class Derive < Base {}
+";
+            Test(code);
+        }
     }
 }

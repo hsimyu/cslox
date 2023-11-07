@@ -75,6 +75,17 @@ namespace cslox
 
         public object? visitClassStmt(Stmt.ClassStmt classStmt)
         {
+            LoxClass? superclass = null;
+            if (classStmt.superclass != null)
+            {
+                var result = evaluate(classStmt.superclass);
+                if (result is null || result is not LoxClass)
+                {
+                    throw new RuntimeError(classStmt.superclass.name, "Superclass must be a class.");
+                }
+                superclass = (LoxClass)result;
+            }
+
             env.define(classStmt.name.lexeme, null);
 
             var methods = new Dictionary<string, LoxFunction>();
@@ -84,7 +95,7 @@ namespace cslox
                 methods.Add(method.name.lexeme, f);
             }
 
-            var klass = new LoxClass(classStmt.name.lexeme, methods);
+            var klass = new LoxClass(classStmt.name.lexeme, superclass, methods);
             env.assign(classStmt.name, klass);
             return null;
         }

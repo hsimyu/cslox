@@ -178,6 +178,16 @@ namespace cslox
             declare(stmt.name);
             define(stmt.name);
 
+            if (stmt.superclass != null && stmt.name.lexeme.Equals(stmt.superclass.name.lexeme))
+            {
+                Program.error(stmt.superclass.name, "A class can't inherit from itself.");
+            }
+
+            if (stmt.superclass != null)
+            {
+                resolve(stmt.superclass);
+            }
+
             beginScope();
             scopes.Peek().Add("this", true);
 

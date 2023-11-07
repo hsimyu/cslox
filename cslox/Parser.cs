@@ -51,8 +51,17 @@ namespace cslox
 
         Stmt classDeclaration()
         {
-            // classDecl := "class" IDENTIFIER "{" function* "}"
+            // classDecl := "class" IDENTIFIER ( "<" IDENTIFIER )? "{" function* "}"
             Token name = consume(TokenType.IDENTIFIER, "Expect variable name after 'class'.");
+
+            Expression.Variable? superclass = null;
+            if (match(TokenType.LESS))
+            {
+                // 継承
+                consume(TokenType.IDENTIFIER, "Expect superclass name.");
+                superclass = new Expression.Variable(previous());
+            }
+
             consume(TokenType.LEFT_BRACE, "Expect '{' before class body.");
 
             var methods = new List<Stmt.FunctionStmt>();
@@ -62,7 +71,7 @@ namespace cslox
             }
 
             consume(TokenType.RIGHT_BRACE, "Expect '}' after class body.");
-            return new Stmt.ClassStmt(name, methods);
+            return new Stmt.ClassStmt(name, superclass, methods);
         }
 
         Stmt varDeclaration()

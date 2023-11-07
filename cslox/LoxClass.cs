@@ -9,11 +9,13 @@ namespace cslox
     internal class LoxClass : LoxCallable
     {
         internal string name;
+        LoxClass? superclass;
         Dictionary<string, LoxFunction> methods = new Dictionary<string, LoxFunction>();
 
-        internal LoxClass(string name, Dictionary<string, LoxFunction> methods)
+        internal LoxClass(string name, LoxClass? superclass, Dictionary<string, LoxFunction> methods)
         {
             this.name = name;
+            this.superclass = superclass;
             this.methods = methods;
         }
 

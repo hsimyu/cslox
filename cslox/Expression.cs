@@ -18,6 +18,7 @@ namespace cslox
             R visitGet(Get expression);
             R visitSet(Set expression);
             R visitThis(This expression);
+            R visitSuper(Super expression);
         }
         public abstract R accept<R>(IVisitor<R> visitor);
 
@@ -203,6 +204,21 @@ namespace cslox
                 return visitor.visitThis(this);
             }
             public Token keyword;
+        }
+
+        public class Super : Expression
+        {
+            internal Super(Token keyword, Token method)
+            {
+                this.keyword = keyword;
+                this.method = method;
+            }
+            public override R accept<R>(IVisitor<R> visitor)
+            {
+                return visitor.visitSuper(this);
+            }
+            public Token keyword;
+            public Token method;
         }
 
     }

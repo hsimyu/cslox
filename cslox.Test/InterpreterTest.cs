@@ -306,5 +306,28 @@ print Derive().cook();
 ";
             Assert.AreEqual("Fry", Test(code));
         }
+
+        [TestMethod]
+        public void SuperclassMethod()
+        {
+            string code;
+            code = @"
+class Doughnut {
+    cook() {
+        return ""Fry"";
+    }
+}
+
+class BostonCream < Doughnut {
+    cook() {
+      var s = super.cook();
+      return s + "" and Pipe"";
+    }
+}
+
+print BostonCream().cook();
+";
+            Assert.AreEqual("Fry and Pipe", Test(code));
+        }
     }
 }

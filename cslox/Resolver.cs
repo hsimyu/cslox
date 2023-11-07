@@ -186,6 +186,10 @@ namespace cslox
             if (stmt.superclass != null)
             {
                 resolve(stmt.superclass);
+
+                // super を含む環境を作成
+                beginScope();
+                scopes.Peek().Add("super", true);
             }
 
             beginScope();
@@ -202,6 +206,11 @@ namespace cslox
             }
 
             endScope();
+
+            if (stmt.superclass != null)
+            {
+                endScope();
+            }
 
             currentClassType = enclosingClassType;
             return null;
@@ -304,6 +313,12 @@ namespace cslox
                 Program.error(expr.keyword, "Can't use 'this' outside of a class.");
                 return null;
             }
+            resolveLocal(expr, expr.keyword);
+            return null;
+        }
+
+        public object? visitSuper(Expression.Super expr)
+        {
             resolveLocal(expr, expr.keyword);
             return null;
         }

@@ -490,7 +490,9 @@ namespace cslox
 
         Expression primary()
         {
-            // primary := NUMBER | STRING | "true" | "false" | "nil" | IDENTIFIER | "this" |  "(" expression ")"
+            // primary := NUMBER | STRING | "true" | "false" | "nil" |
+            //            IDENTIFIER | "this" |  "(" expression ")" |
+            //            "super" "." IDENTIFIER
             if (match(TokenType.FALSE)) return new Expression.Literal(false);
             if (match(TokenType.TRUE)) return new Expression.Literal(true);
             if (match(TokenType.NIL)) return new Expression.Literal(null);
@@ -498,6 +500,14 @@ namespace cslox
             if (match(TokenType.NUMBER, TokenType.STRING))
             {
                 return new Expression.Literal(previous().literal);
+            }
+
+            if (match(TokenType.SUPER))
+            {
+                Token keyword = previous();
+                consume(TokenType.DOT, "Expect '.' after 'super'.");
+                Token method = consume(TokenType.IDENTIFIER, "Expect superclass method name.");
+                return new Expression.Super(keyword, method);
             }
 
             if (match(TokenType.THIS))

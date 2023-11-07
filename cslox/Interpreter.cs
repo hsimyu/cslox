@@ -88,6 +88,13 @@ namespace cslox
 
             env.define(classStmt.name.lexeme, null);
 
+            // 継承解決用の環境を作る
+            if (classStmt.superclass != null)
+            {
+                env = new Environment(env);
+                env.define("super", superclass);
+            }
+
             var methods = new Dictionary<string, LoxFunction>();
             foreach(var method in classStmt.methods)
             {
@@ -96,6 +103,13 @@ namespace cslox
             }
 
             var klass = new LoxClass(classStmt.name.lexeme, superclass, methods);
+
+            // 継承環境をもとに戻す (super は LoxFunction 内にキャプチャされている)
+            if (classStmt.superclass != null)
+            {
+                env = env.enclosing;
+            }
+
             env.assign(classStmt.name, klass);
             return null;
         }
@@ -326,6 +340,19 @@ namespace cslox
         public object? visitThis(Expression.This expr)
         {
             return lookUpVariable(expr.keyword, expr);
+        }
+
+        public object? visitSuper(Expression.Super expr)
+        {
+            int distance = locals[expr];
+            LoxClass superclass = (LoxClass)env.getAt(distance, "super");
+            LoxInstance instance = (LoxInstance)env.getAt(distance - 1, "this");
+            LoxFunction? method = superclass.findMethod(expr.method.lexeme);
+            if (method == null)
+            {
+                throw new RuntimeError(expr.method, $"Undefined property '{expr.method.lexeme}'.");
+            }
+            return method.bind(instance);
         }
 
         public object? visitGrouping(Expression.Grouping expression)

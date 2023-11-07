@@ -40,6 +40,10 @@ namespace cslox
         {
             return "this";
         }
+        public string visitSuper(Expression.Super expr)
+        {
+            return "super";
+        }
         public string visitGrouping(Expression.Grouping expr)
         {
             return parenthesize("group", expr.exp);

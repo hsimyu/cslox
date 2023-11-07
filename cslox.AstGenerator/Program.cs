@@ -27,6 +27,7 @@ namespace cslox.AstGenerator
                 "Get: Expression obj, Token name",
                 "Set: Expression obj, Token name, Expression value",
                 "This: Token keyword",
+                "Super: Token keyword, Token method",
             });
 
             EmitAstTree(outputDir, "Stmt", new string[]

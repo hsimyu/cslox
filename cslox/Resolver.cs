@@ -28,6 +28,7 @@ namespace cslox
         {
             None,
             Class,
+            SubClass,
         }
 
         public Resolver(Interpreter interpreter)
@@ -185,6 +186,7 @@ namespace cslox
 
             if (stmt.superclass != null)
             {
+                currentClassType = ClassType.SubClass;
                 resolve(stmt.superclass);
 
                 // super を含む環境を作成
@@ -311,7 +313,6 @@ namespace cslox
             if (currentClassType == ClassType.None)
             {
                 Program.error(expr.keyword, "Can't use 'this' outside of a class.");
-                return null;
             }
             resolveLocal(expr, expr.keyword);
             return null;
@@ -319,6 +320,14 @@ namespace cslox
 
         public object? visitSuper(Expression.Super expr)
         {
+            if (currentClassType == ClassType.None)
+            {
+                Program.error(expr.keyword, "Can't use 'super' outside of a class.");
+            }
+            else if (currentClassType != ClassType.SubClass)
+            {
+                Program.error(expr.keyword, "Can't use 'super' in a class with no superclass.");
+            }
             resolveLocal(expr, expr.keyword);
             return null;
         }
